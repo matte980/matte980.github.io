@@ -17,7 +17,7 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-      <p class="site-name">Il tuo nome</p>
+      <p class="site-name">Matteo Monzali</p>
       <nav>
         <ul class="nav-links">
           <li><a href="work.html">Work</a></li>
