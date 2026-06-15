@@ -3,61 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Travel — Portfolio</title>
+<title>Work — Portfolio</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="gallery-frame">
+  <div class="gallery-frame work-frame">
     <div class="gallery-header">
       <a class="gallery-nav-link gallery-nav-link--left" href="index.html">←&nbsp;Home</a>
       <h1 class="gallery-title">Work</h1>
-      <a class="gallery-nav-link gallery-nav-link--right" href="Travel.html">Travel</a>
+      <div class="gallery-nav-combo gallery-nav-link--right">
+        <a class="gallery-nav-link" href="Personal.html">Personal</a>
+        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
+        <a class="gallery-nav-link" href="bio.html">Bio</a>
+      </div>
     </div>
 
           <div class="gallery-grid">
         <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="travel-firenze.html">
-            <img src="images/cover1.jpg" alt="Photo One">
-            <span class="item-title">Photo One</span>
+          <a class="gallery-item" href="personal-project.html#work/infn">
+            <img src="images/work/INFN/INFN1.jpg" alt="INFN">
+            <span class="item-title">INFN</span>
           </a>
         </div>
         <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="travel-firenze.html">
-            <img src="images/cover2.jpg" alt="Photo Two">
-            <span class="item-title">Photo Two</span>
+          <a class="gallery-item" href="personal-project.html#work/pasturs">
+            <img src="images/work/PASTURS/PASTURS1.jpg" alt="PASTURS">
+            <span class="item-title">PASTURS</span>
           </a>
         </div>
         <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="travel-firenze.html">
-            <img src="images/cover3.jpg" alt="Photo Three">
-            <span class="item-title">Photo Three</span>
-          </a>
-        </div>
-        <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="travel-firenze.html">
-            <img src="images/cover2.jpg" alt="Photo Four">
-            <span class="item-title">Photo Four</span>
-          </a>
-        </div>
-        <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="travel-firenze.html">
-            <img src="images/cover1.jpg" alt="Photo Five">
-            <span class="item-title">Photo Five</span>
-          </a>
-        </div>
-        <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="travel-firenze.html">
-            <img src="images/cover2.jpg" alt="Photo Six">
-            <span class="item-title">Photo Six</span>
+          <a class="gallery-item" href="personal-project.html#work/virgo">
+            <img src="images/work/VIRGO/Virgo1.jpg" alt="VIRGO">
+            <span class="item-title">VIRGO</span>
           </a>
         </div>
       </div>
+
+      <div class="collab-divider" aria-hidden="true"></div>
+
+      <section class="collab-section" aria-labelledby="collab-title">
+        <h2 id="collab-title" class="collab-title collab-title--centered">Progetti realizzati per</h2>
+        <div class="collab-logos-grid">
+          <div class="collab-logo-item"><img src="images/Logos/BBS%20pro.jpeg" alt="BBS Pro"></div>
+          <div class="collab-logo-item"><img src="images/Logos/DynamoCamp.png" alt="Dynamo Camp"></div>
+          <div class="collab-logo-item"><img src="images/Logos/Ego%20Virgo.webp" alt="Ego Virgo"></div>
+          <div class="collab-logo-item"><img src="images/Logos/FSM.gif" alt="FSM"></div>
+          <div class="collab-logo-item"><img src="images/Logos/Foreste%20Casentinesi.png" alt="Foreste Casentinesi"></div>
+          <div class="collab-logo-item"><img src="images/Logos/INFN%20Firenze.png" alt="INFN Firenze"></div>
+          <div class="collab-logo-item"><img src="images/Logos/Jammin%20Academy.png" alt="Jammin Academy"></div>
+          <div class="collab-logo-item"><img src="images/Logos/Keenwell.png" alt="Keenwell"></div>
+          <div class="collab-logo-item"><img src="images/Logos/Vinando2026.jpg" alt="Vinando 2026"></div>
+          <div class="collab-logo-item"><img src="images/Logos/Vino%20in%20circolo.jpg" alt="Vino in Circolo"></div>
+        </div>
+
+        <div class="collab-featured">
+          <a class="collab-title collab-featured-title" href="https://www.universofoto.it/author/matteo-monzali/">Leggi la rubrica che scrivo per</a>
+          <a class="collab-featured-logo" href="https://www.universofoto.it/author/matteo-monzali/" aria-label="Universo Foto Firenze">
+            <img src="images/Logos/Universo%20Foto.png" alt="Universo Foto Firenze">
+          </a>
+        </div>
+      </section>
     </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      function goHomeWithFade() {
+        document.body.classList.add('fade-out');
+        setTimeout(function() {
+          window.location.href = 'index.html';
+        }, 300);
+      }
+
       document.body.addEventListener('click', function(event) {
         const link = event.target.closest('a');
         if (!link) return;
@@ -73,6 +91,12 @@
         setTimeout(function() {
           window.location.href = url.href;
         }, 300);
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        e.preventDefault();
+        goHomeWithFade();
       });
     });
   </script>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bio — Matteo Monzali</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="bio-frame">
+    <div class="bio-background">
+      <img src="images/cover2.jpg" alt="Sfondo bio">
+    </div>
+
+    <div class="bio-overlay"></div>
+
+    <div class="bio-shell">
+      <header class="bio-header">
+        <a class="gallery-nav-link gallery-nav-link--left" href="index.html">←&nbsp;Home</a>
+      </header>
+
+      <main class="bio-content">
+        <section class="bio-panel">
+          <p class="bio-kicker">Matteo Monzali</p>
+          <h1 class="bio-title">Bio</h1>
+          <p class="bio-text">
+            Matteo Monzali è un fotografo documentario con una formazione scientifica in fisica, specializzato nello studio dei fenomeni artici.
+            Questa doppia prospettiva, tra rigore scientifico e sguardo fotografico, è il filo che attraversa tutto il suo lavoro.
+            Si occupa di fotografia ambientale e scientifica, raccontando il rapporto tra l'essere umano e la natura con un approccio preciso e diretto.
+            Affianca a questo un lavoro sperimentale con l'intelligenza artificiale applicata all'immagine, un territorio in cui esplora nuovi linguaggi visivi.
+          </p>
+
+          <div class="bio-divider"></div>
+
+          <section class="bio-section">
+            <h2 class="bio-section-title">Contatti</h2>
+            <p class="bio-contact-label">Mail</p>
+            <p class="bio-contact-value">matteo.monzali@gmail.com</p>
+            <p class="bio-contact-label">Telefono</p>
+            <p class="bio-contact-value">+39 347 123 4567</p>
+          </section>
+
+          <section class="bio-section">
+            <h2 class="bio-section-title">Social</h2>
+            <div class="bio-socials">
+              <a class="bio-social-link" href="https://www.instagram.com/matte.monza/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <img src="images/Res/Instagram.png" alt="Instagram">
+              </a>
+              <a class="bio-social-link" href="https://www.linkedin.com/in/matteo-monzali/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <img src="images/Res/Linkedin.svg" alt="LinkedIn">
+              </a>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.addEventListener('click', function(event) {
+        const link = event.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || link.target === '_blank') return;
+
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin || url.href === window.location.href) return;
+
+        event.preventDefault();
+        document.body.classList.add('fade-out');
+        setTimeout(function() {
+          window.location.href = url.href;
+        }, 300);
+      });
+    });
+  </script>
+
+</body>
+</html>

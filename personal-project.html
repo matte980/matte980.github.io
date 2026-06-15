@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project — Portfolio</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="project-frame">
+
+    <div class="project-header">
+      <a class="gallery-nav-link gallery-nav-link--left" href="Personal.html">←&nbsp;Personal</a>
+      <div class="gallery-nav-combo gallery-nav-link--right">
+        <a class="gallery-nav-link" href="index.html">Home</a>
+        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
+        <a class="gallery-nav-link" href="bio.html">Bio</a>
+      </div>
+    </div>
+
+    <div class="slideshow" id="slideshow"></div>
+
+    <div class="slide-counter">
+      <span id="current">1</span> / <span id="total"></span>
+    </div>
+
+  </div>
+
+  <script>
+    const CATALOG = {
+      personal: {
+        indexPage: 'Personal.html',
+        indexLabel: 'Personal',
+        projects: {
+          mare: {
+            pageTitle: 'Seaside',
+            altLabel: 'Mare',
+            folder: 'Mare',
+            prefix: 'Mare',
+            count: 13
+          },
+          oslo: {
+            pageTitle: 'Oslo 2025',
+            altLabel: 'Oslo',
+            folder: 'Oslo',
+            prefix: 'Oslo',
+            count: 18
+          },
+          secchieta: {
+            pageTitle: 'Secchieta 2025',
+            altLabel: 'Secchieta',
+            folder: 'Secchieta',
+            prefix: 'Secchieta',
+            count: 20
+          },
+          wales: {
+            pageTitle: 'Wales 2025',
+            altLabel: 'Wales',
+            folder: 'Wales',
+            prefix: 'Wales',
+            count: 27
+          }
+        }
+      },
+      work: {
+        indexPage: 'Work.html',
+        indexLabel: 'Work',
+        projects: {
+          infn: {
+            pageTitle: 'INFN',
+            altLabel: 'INFN',
+            folder: 'INFN',
+            prefix: 'INFN',
+            count: 14
+          },
+          pasturs: {
+            pageTitle: 'PASTURS',
+            altLabel: 'PASTURS',
+            folder: 'PASTURS',
+            prefix: 'PASTURS',
+            count: 13
+          },
+          virgo: {
+            pageTitle: 'VIRGO',
+            altLabel: 'VIRGO',
+            folder: 'VIRGO',
+            prefix: 'Virgo',
+            count: 13
+          }
+        }
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const hashRoute = window.location.hash.replace(/^#\/?/, '');
+    const hashParts = hashRoute.split('/').filter(Boolean);
+
+    let parsedSection = 'personal';
+    let parsedSlug = '';
+
+    if (hashParts.length >= 2) {
+      parsedSection = hashParts[0].toLowerCase();
+      parsedSlug = hashParts[1].toLowerCase();
+    } else {
+      parsedSection = (params.get('section') || 'personal').toLowerCase();
+      parsedSlug = (params.get('slug') || '').toLowerCase();
+    }
+
+    const section = CATALOG[parsedSection] ? parsedSection : 'personal';
+    const sectionConfig = CATALOG[section];
+    const defaultProjectSlug = Object.keys(sectionConfig.projects)[0];
+    const slug = sectionConfig.projects[parsedSlug] ? parsedSlug : defaultProjectSlug;
+    const project = sectionConfig.projects[slug];
+
+    const canonicalHash = '#' + section + '/' + slug;
+    if (window.location.hash !== canonicalHash || window.location.search) {
+      history.replaceState(null, '', window.location.pathname + canonicalHash);
+    }
+
+    document.title = project.pageTitle + ' — ' + sectionConfig.indexLabel;
+
+    const leftNavLink = document.querySelector('.gallery-nav-link--left');
+    leftNavLink.href = sectionConfig.indexPage;
+    leftNavLink.innerHTML = '←&nbsp;' + sectionConfig.indexLabel;
+
+    const slideshowEl = document.getElementById('slideshow');
+    const currentEl = document.getElementById('current');
+    const totalEl = document.getElementById('total');
+
+    function buildSlides(p) {
+      const fragments = [
+        '<div class="nav-zone nav-left" id="prevZone" aria-label="Immagine precedente"></div>',
+        '<div class="nav-zone nav-right" id="nextZone" aria-label="Immagine successiva"></div>'
+      ];
+
+      for (let i = 1; i <= p.count; i += 1) {
+        const isActive = i === 1 ? ' active' : '';
+        const src = 'images/' + section + '/' + p.folder + '/' + p.prefix + i + '.jpg';
+        const alt = p.altLabel + ' ' + i;
+        fragments.push(
+          '<div class="slide' + isActive + '"><img src="' + src + '" alt="' + alt + '"></div>'
+        );
+      }
+
+      slideshowEl.innerHTML = fragments.join('');
+    }
+
+    buildSlides(project);
+
+    const slides = document.querySelectorAll('.slide');
+    let index = 0;
+
+    totalEl.textContent = slides.length;
+
+    function goTo(n) {
+      slides[index].classList.remove('active');
+      index = (n + slides.length) % slides.length;
+      slides[index].classList.add('active');
+      currentEl.textContent = index + 1;
+    }
+
+    function goBackToSection() {
+      document.body.classList.add('fade-out');
+      setTimeout(function() {
+        window.location.href = sectionConfig.indexPage;
+      }, 300);
+    }
+
+    slideshowEl.addEventListener('click', function(e) {
+      const half = this.offsetWidth / 2;
+      if (e.clientX > half) goTo(index + 1);
+      else goTo(index - 1);
+    });
+
+    document.getElementById('prevZone').addEventListener('click', function(e) {
+      e.stopPropagation();
+      goTo(index - 1);
+    });
+
+    document.getElementById('nextZone').addEventListener('click', function(e) {
+      e.stopPropagation();
+      goTo(index + 1);
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight') goTo(index + 1);
+      if (e.key === 'ArrowLeft') goTo(index - 1);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        goBackToSection();
+      }
+    });
+
+    let wheelDeltaSum = 0;
+    let lastWheelNavAt = 0;
+    const WHEEL_THRESHOLD = 55;
+    const WHEEL_COOLDOWN_MS = 600;
+
+    slideshowEl.addEventListener('wheel', function(e) {
+      // On macOS trackpad, pinch zoom emits wheel events with ctrlKey=true.
+      // Ignore them so zoom gestures do not change slide.
+      if (e.ctrlKey) return;
+
+      const now = Date.now();
+      if (now - lastWheelNavAt < WHEEL_COOLDOWN_MS) return;
+
+      const absX = Math.abs(e.deltaX);
+      const absY = Math.abs(e.deltaY);
+      const mainDelta = absX > absY ? e.deltaX : e.deltaY;
+
+      wheelDeltaSum += mainDelta;
+      if (Math.abs(wheelDeltaSum) < WHEEL_THRESHOLD) return;
+
+      if (wheelDeltaSum > 0) goTo(index + 1);
+      else goTo(index - 1);
+
+      wheelDeltaSum = 0;
+      lastWheelNavAt = now;
+      e.preventDefault();
+    }, { passive: false });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.addEventListener('click', function(event) {
+        const link = event.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || link.target === '_blank') return;
+
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin || url.href === window.location.href) return;
+
+        event.preventDefault();
+        document.body.classList.add('fade-out');
+        setTimeout(function() {
+          window.location.href = url.href;
+        }, 300);
+      });
+    });
+  </script>
+
+</body>
+</html>

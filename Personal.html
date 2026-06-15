@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal — Portfolio</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="gallery-frame">
+    <div class="gallery-header">
+      <a class="gallery-nav-link gallery-nav-link--left" href="index.html">←&nbsp;Home</a>
+      <h1 class="gallery-title">Personal</h1>
+      <div class="gallery-nav-combo gallery-nav-link--right">
+        <a class="gallery-nav-link" href="Work.html">Work</a>
+        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
+        <a class="gallery-nav-link" href="bio.html">Bio</a>
+      </div>
+    </div>
+
+          <div class="gallery-grid">
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="personal-project.html#personal/mare">
+            <img src="images/personal/Mare/Mare1.jpg" alt="Mare">
+            <span class="item-title">SEASIDE</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="personal-project.html#personal/oslo">
+            <img src="images/personal/Oslo/Oslo1.jpg" alt="Oslo">
+            <span class="item-title">OSLO</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="personal-project.html#personal/secchieta">
+            <img src="images/personal/Secchieta/Secchieta1.jpg" alt="Secchieta">
+            <span class="item-title">SECCHIETA</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="personal-project.html#personal/wales">
+            <img src="images/personal/Wales/Wales1.jpg" alt="Wales">
+            <span class="item-title">WALES</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="personal-firenze.html">
+            <img src="images/cover1.jpg" alt="Photo Five">
+            <span class="item-title">Photo Five</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="personal-firenze.html">
+            <img src="images/cover2.jpg" alt="Photo Six">
+            <span class="item-title">Photo Six</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function goHomeWithFade() {
+        document.body.classList.add('fade-out');
+        setTimeout(function() {
+          window.location.href = 'index.html';
+        }, 300);
+      }
+
+      document.body.addEventListener('click', function(event) {
+        const link = event.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || link.target === '_blank') return;
+
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin || url.href === window.location.href) return;
+
+        event.preventDefault();
+        document.body.classList.add('fade-out');
+        setTimeout(function() {
+          window.location.href = url.href;
+        }, 300);
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        e.preventDefault();
+        goHomeWithFade();
+      });
+    });
+  </script>
+
+</body>
+</html>
