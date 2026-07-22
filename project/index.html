@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project | Matteo Monzali</title>
+<meta id="meta-description" name="description" content="Project fotografico di Matteo Monzali.">
+<meta name="robots" content="index,follow">
+<link id="meta-canonical" rel="canonical" href="https://matte980.github.io/gallery.html">
+<meta property="og:locale" content="it_IT">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Matteo Monzali">
+<meta id="meta-og-title" property="og:title" content="Project | Matteo Monzali">
+<meta id="meta-og-description" property="og:description" content="Project fotografico di Matteo Monzali.">
+<meta id="meta-og-url" property="og:url" content="https://matte980.github.io/gallery.html">
+<meta id="meta-og-image" property="og:image" content="https://matte980.github.io/images/cover3-2800.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta id="meta-twitter-title" name="twitter:title" content="Project | Matteo Monzali">
+<meta id="meta-twitter-description" name="twitter:description" content="Project fotografico di Matteo Monzali.">
+<meta id="meta-twitter-image" name="twitter:image" content="https://matte980.github.io/images/cover3-2800.jpg">
+<link rel="icon" type="image/png" href="/images/Res/website-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="site-data.js"></script>
+</head>
+<body>
+
+  <div class="project-frame">
+
+    <div class="project-header">
+      <a class="gallery-nav-link gallery-nav-link--left" href="/humannature/" data-site-label="personal" data-site-label-prefix="←&nbsp;"></a>
+      <div class="gallery-nav-combo gallery-nav-link--right">
+        <a class="gallery-nav-link" href="/">Home</a>
+        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
+        <a class="gallery-nav-link" href="/bio/">Bio</a>
+      </div>
+    </div>
+
+    <div class="slideshow" id="slideshow"></div>
+
+    <div class="slide-counter">
+      <span id="current">1</span> / <span id="total"></span>
+    </div>
+
+  </div>
+
+  <script>
+    const SITE_LABELS = window.SITE_NAV;
+
+    const CATALOG = {
+      personal: {
+        indexPage: '/humannature/',
+        indexLabel: SITE_LABELS.personal,
+        projects: {
+          mare: {
+            pageTitle: 'Seaside',
+            altLabel: 'Mare',
+            folder: 'Mare',
+            prefix: 'Mare',
+            count: 13
+          },
+          oslo: {
+            pageTitle: 'Oslo 2025',
+            altLabel: 'Oslo',
+            folder: 'Oslo',
+            prefix: 'Oslo',
+            count: 18
+          },
+          secchieta: {
+            pageTitle: 'Secchieta 2025',
+            altLabel: 'Secchieta',
+            folder: 'Secchieta',
+            prefix: 'Secchieta',
+            count: 20
+          },
+          wales: {
+            pageTitle: 'Wales 2025',
+            altLabel: 'Wales',
+            folder: 'Wales',
+            prefix: 'Wales',
+            count: 27
+          },
+          ai: {
+            pageTitle: 'AI',
+            altLabel: 'AI',
+            basePath: 'images/ai',
+            prefix: 'AI',
+            count: 1
+          }
+        }
+      },
+      work: {
+        indexPage: '/science/',
+        indexLabel: SITE_LABELS.work,
+        projects: {
+          infn: {
+            pageTitle: 'INFN',
+            altLabel: 'INFN',
+            folder: 'INFN',
+            prefix: 'INFN',
+            count: 14
+          },
+          pasturs: {
+            pageTitle: 'PASTURS',
+            altLabel: 'PASTURS',
+            folder: 'PASTURS',
+            prefix: 'PASTURS',
+            count: 13
+          },
+          virgo: {
+            pageTitle: 'VIRGO',
+            altLabel: 'VIRGO',
+            folder: 'VIRGO',
+            prefix: 'Virgo',
+            count: 13
+          }
+        }
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const hashRoute = window.location.hash.replace(/^#\/?/, '');
+    const hashParts = hashRoute.split('/').filter(Boolean);
+
+    let parsedSection = 'personal';
+    let parsedSlug = '';
+
+    if (hashParts.length >= 2) {
+      parsedSection = hashParts[0].toLowerCase();
+      parsedSlug = hashParts[1].toLowerCase();
+    } else {
+      parsedSection = (params.get('section') || 'personal').toLowerCase();
+      parsedSlug = (params.get('slug') || '').toLowerCase();
+    }
+
+    const section = CATALOG[parsedSection] ? parsedSection : 'personal';
+    const sectionConfig = CATALOG[section];
+    const defaultProjectSlug = Object.keys(sectionConfig.projects)[0];
+    const slug = sectionConfig.projects[parsedSlug] ? parsedSlug : defaultProjectSlug;
+    const project = sectionConfig.projects[slug];
+
+    const canonicalHash = '#' + section + '/' + slug;
+    if (window.location.hash !== canonicalHash || window.location.search) {
+      history.replaceState(null, '', window.location.pathname + canonicalHash);
+    }
+
+    document.title = project.pageTitle + ' | Matteo Monzali';
+
+    function absoluteUrl(path) {
+      return new URL(path, window.location.origin + '/').toString();
+    }
+
+    function setMeta(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute('content', value);
+    }
+
+    function setCanonical(value) {
+      const el = document.getElementById('meta-canonical');
+      if (el) el.setAttribute('href', value);
+    }
+
+    function updateSeoMeta(p) {
+      const title = p.pageTitle + ' | Matteo Monzali';
+      const description = p.pageTitle + ' - progetto fotografico di Matteo Monzali.';
+      const preview = resolveCandidates(p)[0];
+      const fallbackUrl = absoluteUrl(window.location.pathname.replace(/^\//, ''));
+      const pageUrl = window.location.hash ? fallbackUrl + window.location.hash : fallbackUrl;
+      const previewUrl = preview ? absoluteUrl(preview.src) : absoluteUrl('images/cover3-2800.jpg');
+
+      setCanonical(fallbackUrl);
+      setMeta('meta-description', description);
+      setMeta('meta-og-title', title);
+      setMeta('meta-og-description', description);
+      setMeta('meta-og-url', pageUrl);
+      setMeta('meta-og-image', previewUrl);
+      setMeta('meta-twitter-title', title);
+      setMeta('meta-twitter-description', description);
+      setMeta('meta-twitter-image', previewUrl);
+    }
+
+    updateSeoMeta(project);
+
+    const leftNavLink = document.querySelector('.gallery-nav-link--left');
+    leftNavLink.href = sectionConfig.indexPage;
+    leftNavLink.innerHTML = '←&nbsp;' + sectionConfig.indexLabel;
+
+    const slideshowEl = document.getElementById('slideshow');
+    const currentEl = document.getElementById('current');
+    const totalEl = document.getElementById('total');
+
+    function resolveCandidates(p) {
+      const imageBasePath = p.basePath || ('images/' + section + '/' + p.folder);
+
+      if (Array.isArray(p.files) && p.files.length > 0) {
+        return p.files.map(function(name, idx) {
+          return {
+            src: imageBasePath + '/' + name,
+            alt: p.altLabel + ' ' + (idx + 1)
+          };
+        });
+      }
+
+      const sequence = Array.isArray(p.available) && p.available.length > 0
+        ? p.available
+        : Array.from({ length: p.count }, function(_, idx) { return idx + 1; });
+
+      return sequence.map(function(n) {
+        return {
+          src: imageBasePath + '/' + p.prefix + n + '.jpg',
+          alt: p.altLabel + ' ' + n
+        };
+      });
+    }
+
+    function checkImageExists(candidate) {
+      return new Promise(function(resolve) {
+        const probe = new Image();
+        probe.onload = function() {
+          resolve(candidate);
+        };
+        probe.onerror = function() {
+          resolve(null);
+        };
+        probe.src = candidate.src;
+      });
+    }
+
+    function buildSlides(p) {
+      const fragments = [
+        '<div class="nav-zone nav-left" id="prevZone" aria-label="Immagine precedente"></div>',
+        '<div class="nav-zone nav-right" id="nextZone" aria-label="Immagine successiva"></div>'
+      ];
+
+      const candidates = resolveCandidates(p);
+      return Promise.all(candidates.map(checkImageExists)).then(function(existing) {
+        const validImages = existing.filter(function(item) { return item !== null; });
+
+        if (validImages.length === 0) {
+          slideshowEl.innerHTML = '<div class="slide active"><p>Nessuna immagine trovata.</p></div>';
+          return [];
+        }
+
+        validImages.forEach(function(image, idx) {
+          const isActive = idx === 0 ? ' active' : '';
+          fragments.push(
+            '<div class="slide' + isActive + '"><img src="' + image.src + '" alt="' + image.alt + '"></div>'
+          );
+        });
+
+        slideshowEl.innerHTML = fragments.join('');
+        return validImages;
+      });
+    }
+
+    let slides = [];
+    let index = 0;
+
+    function goTo(n) {
+      if (slides.length <= 1) return;
+      slides[index].classList.remove('active');
+      index = (n + slides.length) % slides.length;
+      slides[index].classList.add('active');
+      currentEl.textContent = index + 1;
+    }
+
+    function goBackToSection() {
+      document.body.classList.add('fade-out');
+      setTimeout(function() {
+        window.location.href = sectionConfig.indexPage;
+      }, 300);
+    }
+
+    slideshowEl.addEventListener('click', function(e) {
+      if (slides.length <= 1) return;
+      const half = this.offsetWidth / 2;
+      if (e.clientX > half) goTo(index + 1);
+      else goTo(index - 1);
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (slides.length > 1 && e.key === 'ArrowRight') goTo(index + 1);
+      if (slides.length > 1 && e.key === 'ArrowLeft') goTo(index - 1);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        goBackToSection();
+      }
+    });
+
+    let wheelDeltaSum = 0;
+    let lastWheelNavAt = 0;
+    const WHEEL_THRESHOLD = 55;
+    const WHEEL_COOLDOWN_MS = 600;
+
+    slideshowEl.addEventListener('wheel', function(e) {
+      // On macOS trackpad, pinch zoom emits wheel events with ctrlKey=true.
+      // Ignore them so zoom gestures do not change slide.
+      if (e.ctrlKey) return;
+
+      const now = Date.now();
+      if (now - lastWheelNavAt < WHEEL_COOLDOWN_MS) return;
+
+      const absX = Math.abs(e.deltaX);
+      const absY = Math.abs(e.deltaY);
+      const mainDelta = absX > absY ? e.deltaX : e.deltaY;
+
+      wheelDeltaSum += mainDelta;
+      if (Math.abs(wheelDeltaSum) < WHEEL_THRESHOLD) return;
+
+      if (slides.length > 1) {
+        if (wheelDeltaSum > 0) goTo(index + 1);
+        else goTo(index - 1);
+      }
+
+      wheelDeltaSum = 0;
+      lastWheelNavAt = now;
+      e.preventDefault();
+    }, { passive: false });
+
+    buildSlides(project).then(function(validImages) {
+      slides = Array.from(document.querySelectorAll('.slide'));
+      totalEl.textContent = validImages.length;
+      currentEl.textContent = validImages.length > 0 ? '1' : '0';
+
+      if (validImages.length === 0) return;
+
+      const prevZone = document.getElementById('prevZone');
+      const nextZone = document.getElementById('nextZone');
+
+      if (prevZone) {
+        prevZone.addEventListener('click', function(e) {
+          e.stopPropagation();
+          goTo(index - 1);
+        });
+      }
+
+      if (nextZone) {
+        nextZone.addEventListener('click', function(e) {
+          e.stopPropagation();
+          goTo(index + 1);
+        });
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.addEventListener('click', function(event) {
+        const link = event.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || link.target === '_blank') return;
+
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin || url.href === window.location.href) return;
+
+        event.preventDefault();
+        document.body.classList.add('fade-out');
+        setTimeout(function() {
+          window.location.href = url.href;
+        }, 300);
+      });
+    });
+  </script>
+
+</body>
+</html>

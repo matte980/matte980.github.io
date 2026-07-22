@@ -1,3 +1,6 @@
 theme: jekyll-theme-minimal
-title: Octocat's homepage
-description: Bookmark this to keep an eye on my project updates!
+title: Matteo Monzali
+description: Portfolio fotografico di Matteo Monzali tra fotografia documentaria, ambientale e scientifica.
+url: "https://matte980.github.io"
+baseurl: ""
+lang: it-IT

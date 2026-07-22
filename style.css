@@ -9,6 +9,7 @@
   --border: #d8d5d0;
   --text: #1a1a18;
   --text-muted: #888880;
+  --text-soft: #555550;
 }
 
 html, body {
@@ -16,7 +17,7 @@ html, body {
   height: 100%;
   min-height: 100dvh;
   background: var(--bg);
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   overflow-x: hidden;
   opacity: 0;
   animation: pageFadeIn 0.35s ease forwards;
@@ -66,7 +67,7 @@ body.fade-out {
 }
 
 .placeholder-text {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
   font-size: 11px;
   letter-spacing: 0.3em;
@@ -80,47 +81,59 @@ body.fade-out {
   z-index: 2;
   flex: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.2rem 2rem 0;
 }
 
 .site-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: clamp(13px, 1.8vw, 16px);
-  letter-spacing: 0.35em;
-  color: rgba(255, 255, 255, 1);
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 200;
+  font-size: 1rem;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.92);
   text-decoration: none;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
+  position: relative;
   transform-origin: center;
   transition: color 0.3s ease, letter-spacing 0.4s ease;
-  text-transform: uppercase;
-  margin-bottom: 3.5rem;
+  text-transform: none;
+  line-height: 1;
   opacity: 0;
   animation: fadeUp 1s ease 0.3s forwards;
 }
 
+.site-name::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.22em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  opacity: var(--site-name-underline-opacity, 1);
+  pointer-events: none;
+}
+
 .site-name:hover {
   color: #fff;
-  letter-spacing: 0.43em;
+  letter-spacing: 0.34em;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  text-align: center;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 2rem;
+  text-align: right;
 }
 
 .nav-links li {
-  width: 100%;
-  text-align: center;
+  width: auto;
+  text-align: right;
   opacity: 0;
   animation: fadeUp 0.8s ease forwards;
 }
@@ -129,30 +142,31 @@ body.fade-out {
 .nav-links li:nth-child(3) { animation-delay: 1.0s; }
 
 .nav-links a {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
-  font-size: clamp(42px, 8vw, 80px);
-  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 200;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 1);
   text-decoration: none;
-  letter-spacing: 0.05em;
-  line-height: 1.1;
+  letter-spacing: 0.28em;
+  line-height: 1;
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-start;
   min-width: max-content;
   transform-origin: center;
   transition: color 0.3s ease, letter-spacing 0.4s ease;
+  text-transform: uppercase;
 }
 
 .nav-links a:hover {
   color: #fff;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.34em;
 }
 
 .hero-footer {
   position: relative;
   z-index: 2;
-  padding: 1.2rem 2rem;
+  padding: 0 2rem 1.2rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -161,7 +175,7 @@ body.fade-out {
 }
 
 .hero-footer .tagline {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
   font-size: 10px;
   letter-spacing: 0.28em;
@@ -190,9 +204,9 @@ body.fade-out {
 
 .gallery-header {
   padding: 0 2.5rem 1.5rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: baseline;
-  justify-content: space-between;
   border-bottom: 1px solid var(--border);
   width: 100%;
 }
@@ -200,13 +214,16 @@ body.fade-out {
 .gallery-title {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 300;
-  font-size: clamp(32px, 6vw, 60px);
-  color: var(--text);
+  font-size: clamp(22px, 3.5vw, 38px);
+  color: var(--text-soft);
   letter-spacing: 0.04em;
+  text-transform: uppercase;
+  justify-self: center;
+  text-align: center;
 }
 
 .gallery-nav-link {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
   font-size: 0.75rem;
   letter-spacing: 0.28em;
@@ -222,10 +239,12 @@ body.fade-out {
 
 .gallery-nav-link--left {
   text-align: left;
+  justify-self: start;
 }
 
 .gallery-nav-link--right {
   text-align: right;
+  justify-self: end;
 }
 
 .gallery-nav-combo {
@@ -236,7 +255,7 @@ body.fade-out {
 }
 
 .gallery-nav-separator {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
   font-size: 0.75rem;
   letter-spacing: 0.12em;
@@ -252,6 +271,139 @@ body.fade-out {
   gap: 2rem;
   padding: 2rem;
   width: min(100%, 1200px);
+}
+
+.gallery-grid--scattered {
+  width: min(100%, 1360px);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(46px, 4.4vw, 60px);
+  gap: clamp(0.85rem, 1.7vw, 1.35rem);
+  padding: 2.2rem 2rem 2.5rem;
+}
+
+.gallery-grid--scattered .gallery-item-wrapper {
+  align-items: stretch;
+}
+
+.gallery-grid--scattered .gallery-item {
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.gallery-grid--science .gallery-item-wrapper:nth-child(1) {
+  grid-column: 1 / span 5;
+  grid-row: 1 / span 6;
+}
+
+.gallery-grid--science .gallery-item-wrapper:nth-child(2) {
+  grid-column: 8 / span 4;
+  grid-row: 2 / span 5;
+}
+
+.gallery-grid--science .gallery-item-wrapper:nth-child(3) {
+  grid-column: 4 / span 6;
+  grid-row: 8 / span 6;
+}
+
+.gallery-grid--humannature .gallery-item-wrapper:nth-child(1) {
+  grid-column: 2 / span 4;
+  grid-row: 1 / span 5;
+}
+
+.gallery-grid--humannature .gallery-item-wrapper:nth-child(2) {
+  grid-column: 7 / span 5;
+  grid-row: 1 / span 6;
+}
+
+.gallery-grid--humannature .gallery-item-wrapper:nth-child(3) {
+  grid-column: 1 / span 5;
+  grid-row: 7 / span 5;
+}
+
+.gallery-grid--humannature .gallery-item-wrapper:nth-child(4) {
+  grid-column: 8 / span 4;
+  grid-row: 8 / span 6;
+}
+
+.gallery-grid--research .gallery-item-wrapper:nth-child(1) {
+  grid-column: 2 / span 5;
+  grid-row: 1 / span 7;
+}
+
+.gallery-grid--research .gallery-item-wrapper:nth-child(2) {
+  grid-column: 8 / span 4;
+  grid-row: 3 / span 5;
+}
+
+.gallery-grid--research .gallery-item-wrapper {
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-grid--research .gallery-item {
+  height: auto;
+  min-height: 100%;
+  background: transparent;
+}
+
+.gallery-grid--research .gallery-item img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.gallery-grid--research .gallery-item:hover img {
+  transform: none;
+}
+
+.gallery-grid--scattered .gallery-item .item-title {
+  font-weight: 350;
+  font-size: 1.02rem;
+  letter-spacing: 0.11em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.65);
+}
+
+@media (max-width: 1050px) {
+  .gallery-grid--scattered {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: clamp(44px, 7vw, 58px);
+    padding: 1.4rem;
+  }
+
+  .gallery-grid--science .gallery-item-wrapper:nth-child(1),
+  .gallery-grid--humannature .gallery-item-wrapper:nth-child(1) {
+    grid-column: 1 / span 4;
+    grid-row: auto;
+  }
+
+  .gallery-grid--science .gallery-item-wrapper:nth-child(2),
+  .gallery-grid--humannature .gallery-item-wrapper:nth-child(2) {
+    grid-column: 4 / span 3;
+    grid-row: auto;
+  }
+
+  .gallery-grid--science .gallery-item-wrapper:nth-child(3),
+  .gallery-grid--humannature .gallery-item-wrapper:nth-child(3) {
+    grid-column: 2 / span 4;
+    grid-row: auto;
+  }
+
+  .gallery-grid--research .gallery-item-wrapper:nth-child(1) {
+    grid-column: 1 / span 4;
+    grid-row: auto;
+  }
+
+  .gallery-grid--research .gallery-item-wrapper:nth-child(2) {
+    grid-column: 4 / span 3;
+    grid-row: auto;
+  }
+
+  .gallery-grid--humannature .gallery-item-wrapper:nth-child(4) {
+    grid-column: 1 / span 3;
+    grid-row: auto;
+  }
 }
 
 .work-frame {
@@ -278,7 +430,7 @@ body.fade-out {
 }
 
 .collab-title {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
   font-size: 0.8rem;
   letter-spacing: 0.28em;
@@ -361,7 +513,29 @@ body.fade-out {
     padding: 1rem;
   }
 
+  .gallery-grid--scattered {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .gallery-grid--scattered .gallery-item-wrapper {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .gallery-grid--scattered .gallery-item {
+    aspect-ratio: 3 / 2;
+  }
+
+  .gallery-grid--research .gallery-item {
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
   .gallery-header {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
@@ -370,6 +544,22 @@ body.fade-out {
 
   .gallery-title {
     text-align: center;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1rem 1rem 0;
+  }
+
+  .site-name {
+    font-size: 0.75rem;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 0.85rem;
   }
 
   .gallery-nav-link {
@@ -450,7 +640,7 @@ body.fade-out {
 }
 
 .item-title {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
   font-size: 0.95rem;
   margin-bottom: 0.85rem;
@@ -464,7 +654,6 @@ body.fade-out {
   aspect-ratio: 3 / 2;
   background: linear-gradient(135deg, #d8d5cf 0%, #c2bfb8 100%);
   overflow: hidden;
-  cursor: pointer;
   position: relative;
   display: flex;
   align-items: center;
@@ -510,7 +699,7 @@ body.fade-out {
 }
 
 .ph {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
   font-size: 9px;
   letter-spacing: 0.25em;
@@ -536,6 +725,10 @@ body.fade-out {
 
 .project-header a {
   flex: 0;
+}
+
+.project-header .gallery-nav-link--left {
+  white-space: nowrap;
 }
 
 .slideshow {
@@ -571,6 +764,43 @@ body.fade-out {
   height: auto;
   object-fit: contain;
   display: block;
+}
+
+.slide--intro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.2rem;
+}
+
+.intro-slide-content {
+  width: min(760px, 100%);
+  border: 1px solid var(--border);
+  background: rgba(240, 238, 235, 0.92);
+  padding: clamp(1.1rem, 3vw, 2rem);
+  text-align: left;
+}
+
+.intro-slide-label {
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 450;
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+}
+
+.intro-slide-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2.1vw, 1.85rem);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  white-space: pre-line;
 }
 
 .slide-counter {
@@ -648,7 +878,7 @@ body.fade-out {
 }
 
 .bio-kicker {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
   font-size: 0.72rem;
   letter-spacing: 0.32em;
@@ -667,7 +897,7 @@ body.fade-out {
 
 .bio-text,
 .bio-contact-value {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
   font-size: 0.98rem;
   line-height: 1.8;
@@ -687,7 +917,7 @@ body.fade-out {
 
 .bio-section-title,
 .bio-contact-label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
   font-size: 0.72rem;
   letter-spacing: 0.28em;
@@ -698,13 +928,34 @@ body.fade-out {
   margin-bottom: 1rem;
 }
 
+.bio-contact-line {
+  display: grid;
+  grid-template-columns: clamp(7.2rem, 22vw, 9rem) minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+
 .bio-contact-label {
   color: rgba(255, 255, 255, 0.72);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0;
+  white-space: nowrap;
 }
 
 .bio-contact-value {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.bio-contact-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.bio-contact-link:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .bio-socials {
