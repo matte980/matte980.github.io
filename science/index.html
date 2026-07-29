@@ -30,8 +30,6 @@
       <a class="gallery-nav-link gallery-nav-link--left" href="/">←&nbsp;Home</a>
       <h1 class="gallery-title" data-site-label="work"></h1>
       <div class="gallery-nav-combo gallery-nav-link--right">
-        <a class="gallery-nav-link" href="/humannature/" data-site-label="personal"></a>
-        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
         <a class="gallery-nav-link" href="/foundarchives/" data-site-label="research"></a>
         <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
         <a class="gallery-nav-link" href="/bio/">Bio</a>
@@ -40,21 +38,38 @@
 
           <div class="gallery-grid gallery-grid--scattered gallery-grid--science">
         <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="/gallery.html#work/lupo">
+            <img src="/images/work/Lupo/Lupo_001.jpg" alt="Lupo">
+            <span class="item-title">LUPO</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <div class="gallery-item gallery-item--text" aria-label="Work note">
+            <span class="science-text-card-copy">Testo introduttivo</span>
+          </div>
+        </div>
+        <div class="gallery-item-wrapper">
           <a class="gallery-item" href="/gallery.html#work/infn">
             <img src="/images/work/INFN/INFN1.jpg" alt="INFN">
             <span class="item-title">INFN</span>
           </a>
         </div>
         <div class="gallery-item-wrapper">
-          <a class="gallery-item" href="/gallery.html#work/pasturs">
-            <img src="/images/work/PASTURS/PASTURS1.jpg" alt="PASTURS">
-            <span class="item-title">PASTURS</span>
+          <a class="gallery-item" href="/gallery.html#work/cern">
+            <img src="/images/work/CERN/CERN_1.jpg" alt="CERN">
+            <span class="item-title">CERN</span>
           </a>
         </div>
         <div class="gallery-item-wrapper">
           <a class="gallery-item" href="/gallery.html#work/virgo">
             <img src="/images/work/VIRGO/Virgo1.jpg" alt="VIRGO">
             <span class="item-title">VIRGO</span>
+          </a>
+        </div>
+        <div class="gallery-item-wrapper">
+          <a class="gallery-item" href="/gallery.html#work/pasturs">
+            <img src="/images/work/PASTURS/PASTURS1.jpg" alt="PASTURS">
+            <span class="item-title">PASTURS</span>
           </a>
         </div>
       </div>
@@ -87,6 +102,24 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const workNoteEl = document.querySelector('.science-text-card-copy');
+      if (workNoteEl) {
+        fetch('/images/work/WorkNote/IntroWorkNote.txt', { cache: 'no-store' })
+          .then(function(response) {
+            if (!response.ok) return null;
+            return response.text();
+          })
+          .then(function(content) {
+            if (typeof content !== 'string') return;
+            const trimmed = content.trim();
+            if (!trimmed) return;
+            workNoteEl.textContent = trimmed;
+          })
+          .catch(function() {
+            // Keep fallback text already present in the markup.
+          });
+      }
+
       function goHomeWithFade() {
         document.body.classList.add('fade-out');
         setTimeout(function() {

@@ -30,8 +30,6 @@
       <a class="gallery-nav-link gallery-nav-link--left" href="/">←&nbsp;Home</a>
       <h1 class="gallery-title" data-site-label="research"></h1>
       <div class="gallery-nav-combo gallery-nav-link--right">
-        <a class="gallery-nav-link" href="/humannature/" data-site-label="personal"></a>
-        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
         <a class="gallery-nav-link" href="/science/" data-site-label="work"></a>
         <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
         <a class="gallery-nav-link" href="/bio/">Bio</a>
@@ -39,6 +37,11 @@
     </div>
 
     <div class="gallery-grid gallery-grid--scattered gallery-grid--research">
+      <div class="gallery-item-wrapper">
+        <div class="gallery-item gallery-item--text" aria-label="Found Archives intro">
+          <span class="science-text-card-copy">Testo introduttivo</span>
+        </div>
+      </div>
       <div class="gallery-item-wrapper">
         <a class="gallery-item" href="/gallery.html#research/stars">
           <img src="/images/AI/Stars/Stars1.png" alt="Stars">
@@ -57,6 +60,24 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const foundArchivesNoteEl = document.querySelector('.gallery-item--text .science-text-card-copy');
+      if (foundArchivesNoteEl) {
+        fetch('/images/AI/FoundArchives/IntroFoundArchives.txt', { cache: 'no-store' })
+          .then(function(response) {
+            if (!response.ok) return null;
+            return response.text();
+          })
+          .then(function(content) {
+            if (typeof content !== 'string') return;
+            const trimmed = content.trim();
+            if (!trimmed) return;
+            foundArchivesNoteEl.textContent = trimmed;
+          })
+          .catch(function() {
+            // Keep fallback text already present in the markup.
+          });
+      }
+
       function goHomeWithFade() {
         document.body.classList.add('fade-out');
         setTimeout(function() {

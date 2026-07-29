@@ -37,10 +37,7 @@
     </div>
 
     <div class="slideshow" id="slideshow"></div>
-
-    <div class="slide-counter">
-      <span id="current">1</span> / <span id="total"></span>
-    </div>
+    <div class="cursor-counter" id="cursorCounter" aria-hidden="true"></div>
 
   </div>
 
@@ -93,17 +90,37 @@
         indexPage: '/science/',
         indexLabel: SITE_LABELS.work,
         projects: {
+          worknote: {
+            pageTitle: 'Work Note',
+            altLabel: 'Work Note',
+            folder: 'WorkNote',
+            basePath: 'images/work/WorkNote',
+            introTextFile: 'IntroWorkNote.txt',
+            introLabel: 'Work Note',
+            count: 0
+          },
           infn: {
             pageTitle: 'INFN',
             altLabel: 'INFN',
             folder: 'INFN',
+            introTextFile: 'IntroINFN.txt',
+            introLabel: 'INFN',
             prefix: 'INFN',
             count: 14
+          },
+          cern: {
+            pageTitle: 'CERN',
+            altLabel: 'CERN',
+            folder: 'CERN',
+            prefix: 'CERN',
+            count: 10
           },
           pasturs: {
             pageTitle: 'PASTURS',
             altLabel: 'PASTURS',
             folder: 'PASTURS',
+            introTextFile: 'IntroPASTURS.txt',
+            introLabel: 'PASTURS',
             prefix: 'PASTURS',
             count: 13
           },
@@ -111,8 +128,37 @@
             pageTitle: 'VIRGO',
             altLabel: 'VIRGO',
             folder: 'VIRGO',
+            introTextFile: 'IntroVIRGO.txt',
+            introLabel: 'VIRGO',
             prefix: 'Virgo',
             count: 13
+          },
+          lupo: {
+            pageTitle: 'Lupo',
+            altLabel: 'Lupo',
+            folder: 'Lupo',
+            basePath: 'images/work/Lupo',
+            introTextFile: 'IntroLupo.txt',
+            introLabel: 'Lupo',
+            files: [
+              'Lupo_001.jpg',
+              'Lupo_002.jpg',
+              'Lupo_003.jpg',
+              'Lupo_004.jpg',
+              'Lupo_005.jpg',
+              'Lupo_006.jpg',
+              'Lupo_007.jpg',
+              'Lupo_008.jpg',
+              'Lupo_009.jpg',
+              'Lupo_010.jpg',
+              'Lupo_011.jpg',
+              'Lupo_012.jpg',
+              'Lupo_013.jpg',
+              'Lupo_014.jpg',
+              'Lupo_015.jpg',
+              'Lupo_016.jpg',
+              'Lupo_017.jpg'
+            ]
           }
         }
       },
@@ -157,7 +203,7 @@
             folder: 'Arctic',
             basePath: 'images/AI/Arctic',
             introTextFile: 'IntroArctic.txt',
-            introLabel: 'Immagine 0',
+            introLabel: 'Artico',
             files: [
               'Arctic1.png',
               'Arctic2.png',
@@ -233,11 +279,16 @@
 
     const leftNavLink = document.querySelector('.gallery-nav-link--left');
     leftNavLink.href = sectionConfig.indexPage;
-    leftNavLink.innerHTML = '← ' + sectionConfig.indexLabel;
+    leftNavLink.setAttribute('data-site-label', section);
+    leftNavLink.setAttribute('data-site-label-prefix', '←\u00A0');
+    if (typeof window.applySiteLabels === 'function') {
+      window.applySiteLabels();
+    } else {
+      leftNavLink.innerHTML = '←\u00A0' + sectionConfig.indexLabel;
+    }
 
     const slideshowEl = document.getElementById('slideshow');
-    const currentEl = document.getElementById('current');
-    const totalEl = document.getElementById('total');
+    const cursorCounterEl = document.getElementById('cursorCounter');
 
     function escapeHtml(text) {
       return String(text)
@@ -363,9 +414,115 @@
     let slides = [];
     let index = 0;
     let hasIntroSlide = false;
+    let totalImagesCount = 0;
+    let cursorPointsRight = true;
+    let lastPointerX = 0;
+    let lastPointerY = 0;
+    let contrastUpdatePending = false;
+
+    const colorProbeCanvas = document.createElement('canvas');
+    colorProbeCanvas.width = 1;
+    colorProbeCanvas.height = 1;
+    const colorProbeCtx = colorProbeCanvas.getContext('2d', { willReadFrequently: true });
+
+    function toLinearChannel(channel) {
+      const v = channel / 255;
+      return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    }
+
+    function relativeLuminance(r, g, b) {
+      return 0.2126 * toLinearChannel(r)
+        + 0.7152 * toLinearChannel(g)
+        + 0.0722 * toLinearChannel(b);
+    }
+
+    function parseRgbString(rgbText) {
+      const match = rgbText && rgbText.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+      if (!match) return null;
+      return [Number(match[1]), Number(match[2]), Number(match[3])];
+    }
+
+    function applyCounterContrastByLuminance(luminance) {
+      // Use light text on dark surfaces, dark text on light surfaces.
+      const useLightText = luminance < 0.42;
+      cursorCounterEl.classList.toggle('is-on-image', useLightText);
+    }
+
+    function updateCounterContrast(x, y) {
+      if (!cursorCounterEl) return;
+
+      const activeSlide = slides[index];
+      const activeImage = activeSlide ? activeSlide.querySelector('img') : null;
+      const imageRect = activeImage ? activeImage.getBoundingClientRect() : null;
+      const isOnImage = !!imageRect
+        && x >= imageRect.left
+        && x <= imageRect.right
+        && y >= imageRect.top
+        && y <= imageRect.bottom;
+
+      if (!isOnImage || !activeImage || !colorProbeCtx) {
+        const bg = parseRgbString(getComputedStyle(slideshowEl).backgroundColor) || [240, 238, 235];
+        applyCounterContrastByLuminance(relativeLuminance(bg[0], bg[1], bg[2]));
+        return;
+      }
+
+      const nx = (x - imageRect.left) / Math.max(imageRect.width, 1);
+      const ny = (y - imageRect.top) / Math.max(imageRect.height, 1);
+      const sx = Math.min(Math.max(Math.floor(nx * activeImage.naturalWidth), 0), Math.max(activeImage.naturalWidth - 1, 0));
+      const sy = Math.min(Math.max(Math.floor(ny * activeImage.naturalHeight), 0), Math.max(activeImage.naturalHeight - 1, 0));
+
+      try {
+        colorProbeCtx.clearRect(0, 0, 1, 1);
+        colorProbeCtx.drawImage(activeImage, sx, sy, 1, 1, 0, 0, 1, 1);
+        const pixel = colorProbeCtx.getImageData(0, 0, 1, 1).data;
+        applyCounterContrastByLuminance(relativeLuminance(pixel[0], pixel[1], pixel[2]));
+      } catch (_) {
+        // Fallback for any canvas/image read issue.
+        applyCounterContrastByLuminance(1);
+      }
+    }
+
+    function scheduleContrastUpdate(x, y) {
+      lastPointerX = x;
+      lastPointerY = y;
+      if (contrastUpdatePending) return;
+      contrastUpdatePending = true;
+
+      requestAnimationFrame(function() {
+        contrastUpdatePending = false;
+        updateCounterContrast(lastPointerX, lastPointerY);
+      });
+    }
 
     function getCounterValue(currentIndex) {
       return hasIntroSlide ? String(currentIndex) : String(currentIndex + 1);
+    }
+
+    function updateCursorCounterText() {
+      if (!cursorCounterEl) return;
+      const value = getCounterValue(index) + '/' + totalImagesCount;
+      cursorCounterEl.innerHTML = ''
+        + '<span class="cursor-arrow cursor-arrow--left" aria-hidden="true">\u2190</span>'
+        + '<span class="cursor-counter-value">' + value + '</span>'
+        + '<span class="cursor-arrow cursor-arrow--right" aria-hidden="true">\u2192</span>';
+      cursorCounterEl.classList.toggle('is-right', cursorPointsRight);
+      cursorCounterEl.classList.toggle('is-left', !cursorPointsRight);
+    }
+
+    function positionCursorCounter(event) {
+      if (!cursorCounterEl || slides.length === 0) return;
+
+      const rect = slideshowEl.getBoundingClientRect();
+      const x = event.clientX;
+      const y = event.clientY;
+      const isOnRightHalf = x >= (rect.left + rect.width / 2);
+      cursorPointsRight = isOnRightHalf;
+
+      cursorCounterEl.style.left = x + 'px';
+      cursorCounterEl.style.top = y + 'px';
+      updateCursorCounterText();
+      scheduleContrastUpdate(x, y);
+      cursorCounterEl.classList.add('is-visible');
     }
 
     function goTo(n) {
@@ -373,7 +530,10 @@
       slides[index].classList.remove('active');
       index = (n + slides.length) % slides.length;
       slides[index].classList.add('active');
-      currentEl.textContent = getCounterValue(index);
+      updateCursorCounterText();
+      if (cursorCounterEl && cursorCounterEl.classList.contains('is-visible')) {
+        scheduleContrastUpdate(lastPointerX, lastPointerY);
+      }
     }
 
     function goBackToSection() {
@@ -385,9 +545,23 @@
 
     slideshowEl.addEventListener('click', function(e) {
       if (slides.length <= 1) return;
-      const half = this.offsetWidth / 2;
+      const rect = this.getBoundingClientRect();
+      const half = rect.left + rect.width / 2;
       if (e.clientX > half) goTo(index + 1);
       else goTo(index - 1);
+    });
+
+    slideshowEl.addEventListener('mousemove', function(e) {
+      positionCursorCounter(e);
+    });
+
+    slideshowEl.addEventListener('mouseenter', function(e) {
+      positionCursorCounter(e);
+    });
+
+    slideshowEl.addEventListener('mouseleave', function() {
+      if (!cursorCounterEl) return;
+      cursorCounterEl.classList.remove('is-visible');
     });
 
     document.addEventListener('keydown', function(e) {
@@ -432,10 +606,13 @@
     buildSlides(project).then(function(slideshowState) {
       slides = Array.from(document.querySelectorAll('.slide'));
       hasIntroSlide = slideshowState.hasIntro;
-      totalEl.textContent = slideshowState.validImagesCount;
-      currentEl.textContent = slides.length > 0 ? getCounterValue(0) : '0';
+      totalImagesCount = slideshowState.validImagesCount;
+      updateCursorCounterText();
 
-      if (slides.length === 0) return;
+      if (slides.length === 0) {
+        if (cursorCounterEl) cursorCounterEl.classList.remove('is-visible');
+        return;
+      }
 
       const prevZone = document.getElementById('prevZone');
       const nextZone = document.getElementById('nextZone');
