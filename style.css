@@ -230,11 +230,16 @@ body.fade-out {
   text-transform: uppercase;
   color: var(--text-muted);
   text-decoration: none;
-  transition: color 0.25s;
+  transition: color 0.3s ease, letter-spacing 0.4s ease;
 }
 
 .gallery-nav-link:hover {
   color: var(--text);
+  letter-spacing: 0.34em;
+}
+
+.gallery-nav-link:focus-visible {
+  letter-spacing: 0.34em;
 }
 
 .gallery-nav-link--left {
