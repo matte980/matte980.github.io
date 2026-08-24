@@ -50,28 +50,30 @@
 
           <div class="bio-divider"></div>
 
-          <section class="bio-section">
-            <h2 class="bio-section-title">Contatti</h2>
+          <div class="bio-sections-row">
+            <section class="bio-section">
+              <h2 class="bio-section-title">Contatti</h2>
 
-            <p class="bio-contact-line"><span class="bio-contact-label">Mail</span><span class="bio-contact-value"><a class="bio-contact-link" href="mailto:matteo.monzali@gmail.com">matteo.monzali@gmail.com</a></span></p>
-            <p class="bio-contact-line"><span class="bio-contact-label">Telefono</span><span class="bio-contact-value"><a class="bio-contact-link" href="https://wa.me/3893429929" target="_blank" rel="noreferrer">+39 389 3429929</a></span></p>
-            <p class="bio-contact-line"><span class="bio-contact-label">P.IVA</span><span class="bio-contact-value">07418380486</span></p>
-          </section>
+              <p class="bio-contact-line"><span class="bio-contact-label">Mail</span><span class="bio-contact-value"><a class="bio-contact-link" href="mailto:matteo.monzali@gmail.com">matteo.monzali@gmail.com</a></span></p>
+              <p class="bio-contact-line"><span class="bio-contact-label">Telefono</span><span class="bio-contact-value"><a class="bio-contact-link" href="https://wa.me/3893429929" target="_blank" rel="noreferrer">+39 389 3429929</a></span></p>
+              <p class="bio-contact-line"><span class="bio-contact-label">P.IVA</span><span class="bio-contact-value">07418380486</span></p>
+            </section>
 
-          <section class="bio-section">
-            <h2 class="bio-section-title">Social</h2>
-            <div class="bio-socials">
-              <a class="bio-social-link" href="https://wa.me/3893429929" target="_blank" rel="noreferrer" aria-label="Whatsapp">
-                <img src="/images/Res/Phone.png" alt="Whatsapp">
-              </a>
-              <a class="bio-social-link" href="https://www.instagram.com/matte.monza/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                <img src="/images/Res/Instagram.png" alt="Instagram">
-              </a>
-              <a class="bio-social-link" href="https://www.linkedin.com/in/matteo-monzali/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-                <img src="/images/Res/Linkedin.svg" alt="LinkedIn">
-              </a>
-            </div>
-          </section>
+            <section class="bio-section">
+              <h2 class="bio-section-title">Social</h2>
+              <div class="bio-socials">
+                <a class="bio-social-link" href="https://wa.me/3893429929" target="_blank" rel="noreferrer" aria-label="Whatsapp">
+                  <img src="/images/Res/Phone.png" alt="Whatsapp">
+                </a>
+                <a class="bio-social-link" href="https://www.instagram.com/matte.monza/" target="_blank" rel="noreferrer" aria-label="Instagram">
+                  <img src="/images/Res/Instagram.png" alt="Instagram">
+                </a>
+                <a class="bio-social-link" href="https://www.linkedin.com/in/matteo-monzali/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                  <img src="/images/Res/Linkedin.svg" alt="LinkedIn">
+                </a>
+              </div>
+            </section>
+          </div>
         </section>
       </main>
     </div>
@@ -79,6 +81,21 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const bioShellEl = document.querySelector('.bio-shell');
+
+      function updateBioScrollState() {
+        if (!bioShellEl) return;
+        const hasOverflow = bioShellEl.scrollHeight > bioShellEl.clientHeight + 6;
+        bioShellEl.classList.toggle('is-scrollable', hasOverflow);
+      }
+
+      updateBioScrollState();
+      window.addEventListener('resize', updateBioScrollState);
+      window.addEventListener('load', updateBioScrollState);
+      if (document.fonts && typeof document.fonts.ready === 'object') {
+        document.fonts.ready.then(updateBioScrollState);
+      }
+
       document.body.addEventListener('click', function(event) {
         const link = event.target.closest('a');
         if (!link) return;
