@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project | Matteo Monzali</title>
-<meta id="meta-description" name="description" content="Project fotografico di Matteo Monzali.">
+<meta id="meta-description" name="description" content="Selected photography projects by Matteo Monzali.">
 <meta name="robots" content="index,follow">
 <link id="meta-canonical" rel="canonical" href="https://matte980.github.io/gallery.html">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Matteo Monzali">
-<meta id="meta-og-title" property="og:title" content="Project | Matteo Monzali">
-<meta id="meta-og-description" property="og:description" content="Project fotografico di Matteo Monzali.">
+<meta id="meta-og-title" property="og:title" content="Projects | Matteo Monzali">
+<meta id="meta-og-description" property="og:description" content="Selected photography projects by Matteo Monzali.">
 <meta id="meta-og-url" property="og:url" content="https://matte980.github.io/gallery.html">
 <meta id="meta-og-image" property="og:image" content="https://matte980.github.io/images/cover3-2800.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta id="meta-twitter-title" name="twitter:title" content="Project | Matteo Monzali">
-<meta id="meta-twitter-description" name="twitter:description" content="Project fotografico di Matteo Monzali.">
+<meta id="meta-twitter-title" name="twitter:title" content="Projects | Matteo Monzali">
+<meta id="meta-twitter-description" name="twitter:description" content="Selected photography projects by Matteo Monzali.">
 <meta id="meta-twitter-image" name="twitter:image" content="https://matte980.github.io/images/cover3-2800.jpg">
 <link rel="icon" type="image/png" href="/images/Res/website-icon.png">
 <link rel="stylesheet" href="/style.css">
@@ -112,8 +112,42 @@
             pageTitle: 'CERN',
             altLabel: 'CERN',
             folder: 'CERN',
-            prefix: 'CERN',
+            introTextFile: 'IntroCERN.txt',
+            introLabel: 'CERN',
+            prefix: 'CERN_',
             count: 10
+          },
+          'infn-legnaro': {
+            pageTitle: 'INFN Legnaro',
+            altLabel: 'INFN Legnaro',
+            folder: 'INFN_Legnaro',
+            basePath: 'images/work/INFN_Legnaro',
+            introTextFile: 'IntroINFN_Legnaro.txt',
+            introLabel: 'INFN Legnaro',
+            files: [
+              'INFN_Legnaro_01.jpg',
+              'INFN_Legnaro_02.jpg',
+              'INFN_Legnaro_03.jpg',
+              'INFN_Legnaro_04.jpg',
+              'INFN_Legnaro_05.jpg',
+              'INFN_Legnaro_06.jpg',
+              'INFN_Legnaro_07.jpg',
+              'INFN_Legnaro_08.jpg',
+              'INFN_Legnaro_09.jpg',
+              'INFN_Legnaro_10.jpg',
+              'INFN_Legnaro_11.jpg',
+              'INFN_Legnaro_12.jpg',
+              'INFN_Legnaro_13.jpg',
+              'INFN_Legnaro_14.jpg',
+              'INFN_Legnaro_15.jpg',
+              'INFN_Legnaro_16.jpg',
+              'INFN_Legnaro_17.jpg',
+              'INFN_Legnaro_18.jpg',
+              'INFN_Legnaro_19.jpg',
+              'INFN_Legnaro_20.jpg',
+              'INFN_Legnaro_21.jpg',
+              'INFN_Legnaro_22.jpg'
+            ]
           },
           pasturs: {
             pageTitle: 'PASTURS',
@@ -134,30 +168,37 @@
             count: 13
           },
           lupo: {
-            pageTitle: 'Lupo',
-            altLabel: 'Lupo',
+            pageTitle: 'The wolf',
+            altLabel: 'The wolf',
             folder: 'Lupo',
             basePath: 'images/work/Lupo',
             introTextFile: 'IntroLupo.txt',
-            introLabel: 'Lupo',
+            introLabel: 'The wolf',
             files: [
-              'Lupo_001.jpg',
-              'Lupo_002.jpg',
-              'Lupo_003.jpg',
-              'Lupo_004.jpg',
-              'Lupo_005.jpg',
-              'Lupo_006.jpg',
-              'Lupo_007.jpg',
-              'Lupo_008.jpg',
-              'Lupo_009.jpg',
-              'Lupo_010.jpg',
-              'Lupo_011.jpg',
-              'Lupo_012.jpg',
-              'Lupo_013.jpg',
-              'Lupo_014.jpg',
-              'Lupo_015.jpg',
-              'Lupo_016.jpg',
-              'Lupo_017.jpg'
+              'Lupo_01.jpg',
+              'Lupo_02.jpg',
+              'Lupo_03.jpg',
+              'Lupo_04.jpg',
+              'Lupo_05.jpg',
+              'Lupo_06.jpg',
+              'Lupo_07.jpg',
+              'Lupo_08.jpg',
+              'Lupo_09.jpg',
+              'Lupo_10.jpg',
+              'Lupo_11.jpg',
+              'Lupo_12.jpg',
+              'Lupo_13.jpg',
+              'Lupo_14.jpg',
+              'Lupo_15.jpg',
+              'Lupo_16.jpg',
+              'Lupo_17.jpg',
+              'Lupo_18.jpg',
+              'Lupo_19.jpg',
+              'Lupo_20.jpg',
+              'Lupo_21.jpg',
+              'Lupo_22.jpg',
+              'Lupo_23.jpg',
+              'Lupo_24.jpg'
             ]
           }
         }
@@ -258,7 +299,12 @@
 
     function updateSeoMeta(p) {
       const title = p.pageTitle + ' | Matteo Monzali';
-      const description = p.pageTitle + ' - progetto fotografico di Matteo Monzali.';
+      const sectionDescriptions = {
+        personal: 'Personal documentary and environmental photography by Matteo Monzali.',
+        work: 'Commissioned science and documentary photography by Matteo Monzali.',
+        research: 'Research-driven and experimental visual projects by Matteo Monzali.'
+      };
+      const description = p.pageTitle + ' - ' + (sectionDescriptions[section] || 'Photography project by Matteo Monzali.');
       const preview = resolveCandidates(p)[0];
       const fallbackUrl = absoluteUrl(window.location.pathname.replace(/^\//, ''));
       const pageUrl = window.location.hash ? fallbackUrl + window.location.hash : fallbackUrl;
@@ -356,12 +402,16 @@
         });
     }
 
-    function renderIntroSlide(labelValue, textValue) {
+    function renderIntroSlide(labelValue, textValue, backgroundSrc) {
       if (!textValue) return '';
 
       const label = escapeHtml(labelValue || 'Immagine 0');
       const text = escapeHtml(textValue);
+      const bgLayer = backgroundSrc
+        ? '<div class="intro-slide-bg" aria-hidden="true"><img src="' + backgroundSrc + '" alt=""></div>'
+        : '';
       return '<div class="slide slide--intro active" data-intro-slide="true">'
+        + bgLayer
         + '<div class="intro-slide-content">'
         + '<p class="intro-slide-label">' + label + '</p>'
         + '<p class="intro-slide-text">' + text + '</p>'
@@ -371,8 +421,8 @@
 
     function buildSlides(p) {
       const fragments = [
-        '<div class="nav-zone nav-left" id="prevZone" aria-label="Immagine precedente"></div>',
-        '<div class="nav-zone nav-right" id="nextZone" aria-label="Immagine successiva"></div>'
+        '<div class="nav-zone nav-left" id="prevZone" aria-label="Previous picture"></div>',
+        '<div class="nav-zone nav-right" id="nextZone" aria-label="Next picture"></div>'
       ];
 
       const imageBasePath = p.basePath || ('images/' + section + '/' + p.folder);
@@ -384,11 +434,12 @@
         const existing = results[0];
         const resolvedIntroText = results[1];
         const validImages = existing.filter(function(item) { return item !== null; });
-        const introSlideMarkup = renderIntroSlide(p.introLabel, resolvedIntroText);
+        const introBackgroundSrc = validImages.length > 0 ? validImages[0].src : '';
+        const introSlideMarkup = renderIntroSlide(p.introLabel, resolvedIntroText, introBackgroundSrc);
         const hasIntro = introSlideMarkup !== '';
 
         if (validImages.length === 0 && !hasIntro) {
-          slideshowEl.innerHTML = '<div class="slide active"><p>Nessuna immagine trovata.</p></div>';
+          slideshowEl.innerHTML = '<div class="slide active"><p>No images found.</p></div>';
           return { validImagesCount: 0, hasIntro: false };
         }
 

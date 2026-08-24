@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project | Matteo Monzali</title>
-<meta id="meta-description" name="description" content="Project fotografico di Matteo Monzali.">
+<title>Projects | Matteo Monzali</title>
+<meta id="meta-description" name="description" content="Selected photography projects by Matteo Monzali.">
 <meta name="robots" content="index,follow">
-<link id="meta-canonical" rel="canonical" href="https://matte980.github.io/gallery.html">
-<meta property="og:locale" content="it_IT">
+<link id="meta-canonical" rel="canonical" href="https://matte980.github.io/project/">
+<meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Matteo Monzali">
-<meta id="meta-og-title" property="og:title" content="Project | Matteo Monzali">
-<meta id="meta-og-description" property="og:description" content="Project fotografico di Matteo Monzali.">
-<meta id="meta-og-url" property="og:url" content="https://matte980.github.io/gallery.html">
+<meta id="meta-og-title" property="og:title" content="Projects | Matteo Monzali">
+<meta id="meta-og-description" property="og:description" content="Selected photography projects by Matteo Monzali.">
+<meta id="meta-og-url" property="og:url" content="https://matte980.github.io/project/">
 <meta id="meta-og-image" property="og:image" content="https://matte980.github.io/images/cover3-2800.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta id="meta-twitter-title" name="twitter:title" content="Project | Matteo Monzali">
-<meta id="meta-twitter-description" name="twitter:description" content="Project fotografico di Matteo Monzali.">
+<meta id="meta-twitter-title" name="twitter:title" content="Projects | Matteo Monzali">
+<meta id="meta-twitter-description" name="twitter:description" content="Selected photography projects by Matteo Monzali.">
 <meta id="meta-twitter-image" name="twitter:image" content="https://matte980.github.io/images/cover3-2800.jpg">
 <link rel="icon" type="image/png" href="/images/Res/website-icon.png">
 <link rel="stylesheet" href="/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="site-data.js"></script>
+<script src="/site-data.js"></script>
 </head>
 <body>
 
@@ -104,8 +104,42 @@
             pageTitle: 'CERN',
             altLabel: 'CERN',
             folder: 'CERN',
-            prefix: 'CERN',
+            introTextFile: 'IntroCERN.txt',
+            introLabel: 'CERN',
+            prefix: 'CERN_',
             count: 10
+          },
+          'infn-legnaro': {
+            pageTitle: 'INFN Legnaro',
+            altLabel: 'INFN Legnaro',
+            folder: 'INFN_Legnaro',
+            basePath: 'images/work/INFN_Legnaro',
+            introTextFile: 'IntroINFN_Legnaro.txt',
+            introLabel: 'INFN Legnaro',
+            files: [
+              'INFN_Legnaro_01.jpg',
+              'INFN_Legnaro_02.jpg',
+              'INFN_Legnaro_03.jpg',
+              'INFN_Legnaro_04.jpg',
+              'INFN_Legnaro_05.jpg',
+              'INFN_Legnaro_06.jpg',
+              'INFN_Legnaro_07.jpg',
+              'INFN_Legnaro_08.jpg',
+              'INFN_Legnaro_09.jpg',
+              'INFN_Legnaro_10.jpg',
+              'INFN_Legnaro_11.jpg',
+              'INFN_Legnaro_12.jpg',
+              'INFN_Legnaro_13.jpg',
+              'INFN_Legnaro_14.jpg',
+              'INFN_Legnaro_15.jpg',
+              'INFN_Legnaro_16.jpg',
+              'INFN_Legnaro_17.jpg',
+              'INFN_Legnaro_18.jpg',
+              'INFN_Legnaro_19.jpg',
+              'INFN_Legnaro_20.jpg',
+              'INFN_Legnaro_21.jpg',
+              'INFN_Legnaro_22.jpg'
+            ]
           },
           pasturs: {
             pageTitle: 'PASTURS',
@@ -169,7 +203,11 @@
 
     function updateSeoMeta(p) {
       const title = p.pageTitle + ' | Matteo Monzali';
-      const description = p.pageTitle + ' - progetto fotografico di Matteo Monzali.';
+      const sectionDescriptions = {
+        personal: 'Personal documentary and environmental photography by Matteo Monzali.',
+        work: 'Commissioned science and documentary photography by Matteo Monzali.'
+      };
+      const description = p.pageTitle + ' - ' + (sectionDescriptions[section] || 'Photography project by Matteo Monzali.');
       const preview = resolveCandidates(p)[0];
       const fallbackUrl = absoluteUrl(window.location.pathname.replace(/^\//, ''));
       const pageUrl = window.location.hash ? fallbackUrl + window.location.hash : fallbackUrl;
@@ -235,8 +273,8 @@
 
     function buildSlides(p) {
       const fragments = [
-        '<div class="nav-zone nav-left" id="prevZone" aria-label="Immagine precedente"></div>',
-        '<div class="nav-zone nav-right" id="nextZone" aria-label="Immagine successiva"></div>'
+        '<div class="nav-zone nav-left" id="prevZone" aria-label="Previous picture"></div>',
+        '<div class="nav-zone nav-right" id="nextZone" aria-label="Next picture"></div>'
       ];
 
       const candidates = resolveCandidates(p);
@@ -244,7 +282,7 @@
         const validImages = existing.filter(function(item) { return item !== null; });
 
         if (validImages.length === 0) {
-          slideshowEl.innerHTML = '<div class="slide active"><p>Nessuna immagine trovata.</p></div>';
+          slideshowEl.innerHTML = '<div class="slide active"><p>No images found.</p></div>';
           return [];
         }
 
