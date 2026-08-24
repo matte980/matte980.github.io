@@ -575,7 +575,14 @@
       window.navigateWithFade(sectionConfig.indexPage);
     }
 
+    let suppressClickUntil = 0;
+
     slideshowEl.addEventListener('click', function(e) {
+      if (Date.now() < suppressClickUntil) {
+        e.preventDefault();
+        return;
+      }
+
       if (slides.length <= 1) return;
       const rect = this.getBoundingClientRect();
       const half = rect.left + rect.width / 2;
@@ -610,6 +617,18 @@
     const WHEEL_THRESHOLD = 55;
     const WHEEL_COOLDOWN_MS = 600;
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchLastX = 0;
+    let touchLastY = 0;
+    let touchStartAt = 0;
+    let isTouchTracking = false;
+
+    const SWIPE_MIN_X = 42;
+    const SWIPE_MAX_Y = 70;
+    const SWIPE_AXIS_RATIO = 1.25;
+    const SWIPE_MAX_MS = 700;
+
     slideshowEl.addEventListener('wheel', function(e) {
       // On macOS trackpad, pinch zoom emits wheel events with ctrlKey=true.
       // Ignore them so zoom gestures do not change slide.
@@ -634,6 +653,58 @@
       lastWheelNavAt = now;
       e.preventDefault();
     }, { passive: false });
+
+    slideshowEl.addEventListener('touchstart', function(e) {
+      if (slides.length <= 1) return;
+      if (!e.touches || e.touches.length !== 1) return;
+
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchLastX = touch.clientX;
+      touchLastY = touch.clientY;
+      touchStartAt = Date.now();
+      isTouchTracking = true;
+    }, { passive: true });
+
+    slideshowEl.addEventListener('touchmove', function(e) {
+      if (!isTouchTracking) return;
+      if (!e.touches || e.touches.length !== 1) return;
+
+      touchLastX = e.touches[0].clientX;
+      touchLastY = e.touches[0].clientY;
+    }, { passive: true });
+
+    slideshowEl.addEventListener('touchend', function(e) {
+      if (!isTouchTracking) return;
+      isTouchTracking = false;
+
+      const endedTouch = e.changedTouches && e.changedTouches[0];
+      const endX = endedTouch ? endedTouch.clientX : touchLastX;
+      const endY = endedTouch ? endedTouch.clientY : touchLastY;
+      const dx = endX - touchStartX;
+      const dy = endY - touchStartY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+      const elapsed = Date.now() - touchStartAt;
+
+      const isHorizontalSwipe = elapsed <= SWIPE_MAX_MS
+        && absX >= SWIPE_MIN_X
+        && absY <= SWIPE_MAX_Y
+        && absX > absY * SWIPE_AXIS_RATIO;
+
+      if (!isHorizontalSwipe) return;
+
+      if (dx < 0) goTo(index + 1);
+      else goTo(index - 1);
+
+      suppressClickUntil = Date.now() + 450;
+      e.preventDefault();
+    }, { passive: false });
+
+    slideshowEl.addEventListener('touchcancel', function() {
+      isTouchTracking = false;
+    });
 
     buildSlides(project).then(function(slideshowState) {
       slides = Array.from(document.querySelectorAll('.slide'));
