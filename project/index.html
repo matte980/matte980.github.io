@@ -107,7 +107,8 @@
             introTextFile: 'IntroCERN.txt',
             introLabel: 'CERN',
             prefix: 'CERN_',
-            count: 10
+            zeroPad: 2,
+            count: 14
           },
           'infn-legnaro': {
             pageTitle: 'INFN Legnaro',
@@ -116,30 +117,9 @@
             basePath: 'images/work/INFN_Legnaro',
             introTextFile: 'IntroINFN_Legnaro.txt',
             introLabel: 'INFN Legnaro',
-            files: [
-              'INFN_Legnaro_01.jpg',
-              'INFN_Legnaro_02.jpg',
-              'INFN_Legnaro_03.jpg',
-              'INFN_Legnaro_04.jpg',
-              'INFN_Legnaro_05.jpg',
-              'INFN_Legnaro_06.jpg',
-              'INFN_Legnaro_07.jpg',
-              'INFN_Legnaro_08.jpg',
-              'INFN_Legnaro_09.jpg',
-              'INFN_Legnaro_10.jpg',
-              'INFN_Legnaro_11.jpg',
-              'INFN_Legnaro_12.jpg',
-              'INFN_Legnaro_13.jpg',
-              'INFN_Legnaro_14.jpg',
-              'INFN_Legnaro_15.jpg',
-              'INFN_Legnaro_16.jpg',
-              'INFN_Legnaro_17.jpg',
-              'INFN_Legnaro_18.jpg',
-              'INFN_Legnaro_19.jpg',
-              'INFN_Legnaro_20.jpg',
-              'INFN_Legnaro_21.jpg',
-              'INFN_Legnaro_22.jpg'
-            ]
+            prefix: 'INFN_Legnaro_',
+            zeroPad: 2,
+            count: 22
           },
           pasturs: {
             pageTitle: 'PASTURS',
@@ -251,8 +231,11 @@
         : Array.from({ length: p.count }, function(_, idx) { return idx + 1; });
 
       return sequence.map(function(n) {
+        const formattedIndex = typeof p.zeroPad === 'number' && p.zeroPad > 0
+          ? String(n).padStart(p.zeroPad, '0')
+          : String(n);
         return {
-          src: imageBasePath + '/' + p.prefix + n + '.jpg',
+          src: imageBasePath + '/' + p.prefix + formattedIndex + '.jpg',
           alt: p.altLabel + ' ' + n
         };
       });
