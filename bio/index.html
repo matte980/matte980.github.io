@@ -18,22 +18,23 @@
 <meta name="twitter:title" content="Bio | Matteo Monzali">
 <meta name="twitter:description" content="Biography and contacts of Matteo Monzali, documentary photographer with a background in physics.">
 <meta name="twitter:image" content="https://matte980.github.io/images/Res/DescriptionImage.jpg">
-<link rel="icon" type="image/png" href="/images/Res/website-icon.png">
-<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="../images/Res/website-icon.png">
+<link rel="stylesheet" href="../style.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="../shared-ui.js"></script>
 </head>
 <body>
 
   <div class="bio-frame">
     <div class="bio-background">
-      <img src="/images/cover2-2800.jpg" alt="Sfondo bio">
+      <img src="../images/cover2-2800.jpg" alt="Sfondo bio">
     </div>
 
     <div class="bio-overlay"></div>
 
     <div class="bio-shell">
       <header class="bio-header">
-        <a class="gallery-nav-link gallery-nav-link--left" href="/">←&nbsp;Home</a>
+        <a class="gallery-nav-link gallery-nav-link--left" href="../">←&nbsp;Home</a>
       </header>
 
       <main class="bio-content">
@@ -63,13 +64,13 @@
               <h2 class="bio-section-title">Social</h2>
               <div class="bio-socials">
                 <a class="bio-social-link" href="https://wa.me/3893429929" target="_blank" rel="noreferrer" aria-label="Whatsapp">
-                  <img src="/images/Res/Phone.png" alt="Whatsapp">
+                  <img src="../images/Res/Phone.png" alt="Whatsapp">
                 </a>
                 <a class="bio-social-link" href="https://www.instagram.com/matte.monza/" target="_blank" rel="noreferrer" aria-label="Instagram">
-                  <img src="/images/Res/Instagram.png" alt="Instagram">
+                  <img src="../images/Res/Instagram.png" alt="Instagram">
                 </a>
                 <a class="bio-social-link" href="https://www.linkedin.com/in/matteo-monzali/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-                  <img src="/images/Res/Linkedin.svg" alt="LinkedIn">
+                  <img src="../images/Res/Linkedin.svg" alt="LinkedIn">
                 </a>
               </div>
             </section>
@@ -96,22 +97,6 @@
         document.fonts.ready.then(updateBioScrollState);
       }
 
-      document.body.addEventListener('click', function(event) {
-        const link = event.target.closest('a');
-        if (!link) return;
-
-        const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || link.target === '_blank') return;
-
-        const url = new URL(href, window.location.href);
-        if (url.origin !== window.location.origin || url.href === window.location.href) return;
-
-        event.preventDefault();
-        document.body.classList.add('fade-out');
-        setTimeout(function() {
-          window.location.href = url.href;
-        }, 300);
-      });
     });
   </script>
 
