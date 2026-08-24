@@ -225,7 +225,7 @@
             folder: 'Arctic',
             basePath: 'images/AI/Arctic',
             introTextFile: 'IntroArctic.txt',
-            introLabel: 'Artico',
+            introLabel: 'Arctic',
             files: [
               'Arctic1.png',
               'Arctic2.png',
@@ -389,7 +389,7 @@
     function renderIntroSlide(labelValue, textValue, backgroundSrc) {
       if (!textValue) return '';
 
-      const label = escapeHtml(labelValue || 'Immagine 0');
+      const label = escapeHtml(labelValue || 'Picture 0');
       const text = escapeHtml(textValue);
       const bgLayer = backgroundSrc
         ? '<div class="intro-slide-bg" aria-hidden="true"><img src="' + backgroundSrc + '" alt=""></div>'
