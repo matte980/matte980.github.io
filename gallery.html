@@ -97,6 +97,7 @@
             folder: 'WorkNote',
             basePath: 'images/work/WorkNote',
             introTextFile: 'IntroWorkNote.txt',
+            introTextPath: 'images/Intro/IntroWorkNote.txt',
             introLabel: 'Work Note',
             count: 0
           },
@@ -105,6 +106,7 @@
             altLabel: 'INFN',
             folder: 'INFN',
             introTextFile: 'IntroINFN.txt',
+            introTextPath: 'images/Intro/IntroINFN.txt',
             introLabel: 'INFN',
             prefix: 'INFN',
             count: 14
@@ -114,6 +116,7 @@
             altLabel: 'CERN',
             folder: 'CERN',
             introTextFile: 'IntroCERN.txt',
+            introTextPath: 'images/Intro/IntroCERN.txt',
             introLabel: 'CERN',
             prefix: 'CERN_',
             zeroPad: 2,
@@ -125,6 +128,7 @@
             folder: 'INFN_Legnaro',
             basePath: 'images/work/INFN_Legnaro',
             introTextFile: 'IntroINFN_Legnaro.txt',
+            introTextPath: 'images/Intro/IntroINFN_Legnaro.txt',
             introLabel: 'INFN Legnaro',
             prefix: 'INFN_Legnaro_',
             zeroPad: 2,
@@ -135,6 +139,7 @@
             altLabel: 'PASTURS PROJECT',
             folder: 'PASTURS',
             introTextFile: 'IntroPASTURS.txt',
+            introTextPath: 'images/Intro/IntroPASTURS.txt',
             introLabel: 'PASTURS PROJECT',
             prefix: 'PASTURS',
             count: 13
@@ -144,6 +149,7 @@
             altLabel: 'VIRGO',
             folder: 'VIRGO',
             introTextFile: 'IntroVIRGO.txt',
+            introTextPath: 'images/Intro/IntroVIRGO.txt',
             introLabel: 'VIRGO',
             prefix: 'Virgo',
             count: 13
@@ -154,6 +160,7 @@
             folder: 'Lupo',
             basePath: 'images/work/Lupo',
             introTextFile: 'IntroLupo.txt',
+            introTextPath: 'images/Intro/IntroLupo.txt',
             introLabel: 'The wolf',
             files: [
               'Lupo_01.jpg',
@@ -194,6 +201,7 @@
             folder: 'Stars',
             basePath: 'images/AI/Stars',
             introTextFile: 'IntroStars.txt',
+            introTextPath: 'images/Intro/IntroStars.txt',
             introLabel: 'Stars',
             files: [
               'Stars1.png',
@@ -225,6 +233,7 @@
             folder: 'Arctic',
             basePath: 'images/AI/Arctic',
             introTextFile: 'IntroArctic.txt',
+            introTextPath: 'images/Intro/IntroArctic.txt',
             introLabel: 'Arctic',
             files: [
               'Arctic1.png',
@@ -368,11 +377,13 @@
 
     function resolveIntroText(p, imageBasePath) {
       const fallbackText = typeof p.introText === 'string' ? p.introText.trim() : '';
-      if (typeof p.introTextFile !== 'string' || p.introTextFile.trim() === '') {
+      const explicitPath = typeof p.introTextPath === 'string' ? p.introTextPath.trim() : '';
+      const introFileName = typeof p.introTextFile === 'string' ? p.introTextFile.trim() : '';
+      if (!explicitPath && (!introFileName)) {
         return Promise.resolve(fallbackText);
       }
 
-      const introFilePath = imageBasePath + '/' + p.introTextFile.trim();
+      const introFilePath = explicitPath || (imageBasePath + '/' + introFileName);
       return fetch(introFilePath, { cache: 'no-store' })
         .then(function(response) {
           if (!response.ok) return fallbackText;
@@ -386,11 +397,42 @@
         });
     }
 
+    function parseIntroTextContent(rawText) {
+      const normalized = typeof rawText === 'string' ? rawText.replace(/\r\n/g, '\n').trim() : '';
+      if (!normalized) {
+        return { subtitle: '', text: '' };
+      }
+
+      const paragraphs = normalized
+        .split(/\n\s*\n/)
+        .map(function(paragraph) {
+          return paragraph.replace(/\s+/g, ' ').trim();
+        })
+        .filter(function(paragraph) {
+          return paragraph.length > 0;
+        });
+
+      if (paragraphs.length <= 1) {
+        return { subtitle: '', text: paragraphs[0] || '' };
+      }
+
+      return {
+        subtitle: paragraphs[0],
+        text: paragraphs.slice(1).join('\n\n')
+      };
+    }
+
     function renderIntroSlide(labelValue, textValue, backgroundSrc) {
       if (!textValue) return '';
 
+      const parsed = parseIntroTextContent(textValue);
       const label = escapeHtml(labelValue || 'Picture 0');
-      const text = escapeHtml(textValue);
+      const subtitleMarkup = parsed.subtitle
+        ? '<p class="intro-slide-subtitle">' + escapeHtml(parsed.subtitle) + '</p>'
+        : '';
+      const textMarkup = parsed.text
+        ? '<p class="intro-slide-text">' + escapeHtml(parsed.text) + '</p>'
+        : '';
       const bgLayer = backgroundSrc
         ? '<div class="intro-slide-bg" aria-hidden="true"><img src="' + backgroundSrc + '" alt=""></div>'
         : '';
@@ -398,7 +440,8 @@
         + bgLayer
         + '<div class="intro-slide-content">'
         + '<p class="intro-slide-label">' + label + '</p>'
-        + '<p class="intro-slide-text">' + text + '</p>'
+        + subtitleMarkup
+        + textMarkup
         + '</div>'
         + '</div>';
     }
