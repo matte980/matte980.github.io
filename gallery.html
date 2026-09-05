@@ -30,6 +30,11 @@
 
     <div class="project-header">
       <a class="gallery-nav-link gallery-nav-link--left" href="humannature/" data-site-label="personal" data-site-label-prefix="←&nbsp;"></a>
+      <div class="project-title-group" id="projectTitleGroup">
+        <span class="project-title-adjacent project-title-adjacent--prev" id="projectTitlePrev"></span>
+        <span class="gallery-nav-link project-title" id="projectTitle"></span>
+        <span class="project-title-adjacent project-title-adjacent--next" id="projectTitleNext"></span>
+      </div>
       <div class="gallery-nav-combo gallery-nav-link--right">
         <a class="gallery-nav-link" href="./">Home</a>
         <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
@@ -90,6 +95,7 @@
       work: {
         indexPage: 'science/',
         indexLabel: SITE_LABELS.work,
+        order: ['lupo', 'infn', 'cern', 'infn-legnaro', 'opd', 'virgo', 'pasturs'],
         projects: {
           worknote: {
             pageTitle: 'Work Note',
@@ -102,12 +108,12 @@
             count: 0
           },
           infn: {
-            pageTitle: 'INFN',
-            altLabel: 'INFN',
+            pageTitle: 'INFN Firenze',
+            altLabel: 'INFN Firenze',
             folder: 'INFN',
             introTextFile: 'IntroINFN.txt',
             introTextPath: 'images/Intro/IntroINFN.txt',
-            introLabel: 'INFN',
+            introLabel: 'INFN Firenze',
             prefix: 'INFN',
             count: 14
           },
@@ -135,8 +141,8 @@
             count: 22
           },
           pasturs: {
-            pageTitle: 'PASTURS PROJECT',
-            altLabel: 'PASTURS PROJECT',
+            pageTitle: 'PASTURS',
+            altLabel: 'PASTURS',
             folder: 'PASTURS',
             introTextFile: 'IntroPASTURS.txt',
             introTextPath: 'images/Intro/IntroPASTURS.txt',
@@ -274,8 +280,8 @@
     const section = CATALOG[parsedSection] ? parsedSection : 'personal';
     const sectionConfig = CATALOG[section];
     const defaultProjectSlug = Object.keys(sectionConfig.projects)[0];
-    const slug = sectionConfig.projects[parsedSlug] ? parsedSlug : defaultProjectSlug;
-    const project = sectionConfig.projects[slug];
+    let slug = sectionConfig.projects[parsedSlug] ? parsedSlug : defaultProjectSlug;
+    let project = sectionConfig.projects[slug];
 
     const canonicalHash = '#' + section + '/' + slug;
     if (window.location.hash !== canonicalHash || window.location.search) {
@@ -283,6 +289,11 @@
     }
 
     document.title = project.pageTitle + ' | Matteo Monzali';
+
+    const projectTitleEl = document.getElementById('projectTitle');
+    const projectTitlePrevEl = document.getElementById('projectTitlePrev');
+    const projectTitleNextEl = document.getElementById('projectTitleNext');
+    if (projectTitleEl) projectTitleEl.textContent = project.introLabel || project.pageTitle;
 
     function absoluteUrl(path) {
       return new URL(path.replace(/^\//, ''), 'https://matteomonzali.com/').toString();
@@ -614,7 +625,51 @@
       cursorCounterEl.classList.add('is-visible');
     }
 
+    const projectOrder = Array.isArray(sectionConfig.order)
+      ? sectionConfig.order.filter(function(s) { return !!sectionConfig.projects[s]; })
+      : [];
+
+    function updateAdjacentTitles() {
+      if (!projectTitlePrevEl || !projectTitleNextEl) return;
+      if (projectOrder.length < 2) {
+        projectTitlePrevEl.textContent = '';
+        projectTitleNextEl.textContent = '';
+        return;
+      }
+
+      const currentOrderIndex = projectOrder.indexOf(slug);
+      const baseIndex = currentOrderIndex === -1 ? 0 : currentOrderIndex;
+      const prevProject = sectionConfig.projects[projectOrder[(baseIndex - 1 + projectOrder.length) % projectOrder.length]];
+      const nextProject = sectionConfig.projects[projectOrder[(baseIndex + 1) % projectOrder.length]];
+      projectTitlePrevEl.textContent = prevProject.pageTitle;
+      projectTitleNextEl.textContent = nextProject.pageTitle;
+    }
+
+    if (projectTitlePrevEl) {
+      projectTitlePrevEl.addEventListener('click', function() { switchProject(-1); });
+    }
+    if (projectTitleNextEl) {
+      projectTitleNextEl.addEventListener('click', function() { switchProject(1); });
+    }
+
+    function switchProject(direction) {
+      if (projectOrder.length < 2) return false;
+      const currentOrderIndex = projectOrder.indexOf(slug);
+      const baseIndex = currentOrderIndex === -1 ? 0 : currentOrderIndex;
+      const nextOrderIndex = (baseIndex + direction + projectOrder.length) % projectOrder.length;
+      const nextSlug = projectOrder[nextOrderIndex];
+      if (!nextSlug || nextSlug === slug) return false;
+      loadProject(nextSlug, direction > 0 ? 'start' : 'end');
+      return true;
+    }
+
     function goTo(n) {
+      if (slides.length === 0) return;
+      const crossingForward = n >= slides.length;
+      const crossingBackward = n < 0;
+      if ((crossingForward || crossingBackward) && switchProject(crossingBackward ? -1 : 1)) {
+        return;
+      }
       if (slides.length <= 1) return;
       slides[index].classList.remove('active');
       index = (n + slides.length) % slides.length;
@@ -760,17 +815,7 @@
       isTouchTracking = false;
     });
 
-    buildSlides(project).then(function(slideshowState) {
-      slides = Array.from(document.querySelectorAll('.slide'));
-      hasIntroSlide = slideshowState.hasIntro;
-      totalImagesCount = slideshowState.validImagesCount;
-      updateCursorCounterText();
-
-      if (slides.length === 0) {
-        if (cursorCounterEl) cursorCounterEl.classList.remove('is-visible');
-        return;
-      }
-
+    function attachNavZoneListeners() {
       const prevZone = document.getElementById('prevZone');
       const nextZone = document.getElementById('nextZone');
 
@@ -787,7 +832,40 @@
           goTo(index + 1);
         });
       }
-    });
+    }
+
+    function loadProject(newSlug, entryEdge) {
+      slug = newSlug;
+      project = sectionConfig.projects[slug];
+
+      const newCanonicalHash = '#' + section + '/' + slug;
+      history.replaceState(null, '', window.location.pathname + newCanonicalHash);
+      document.title = project.pageTitle + ' | Matteo Monzali';
+      if (projectTitleEl) projectTitleEl.textContent = project.introLabel || project.pageTitle;
+      updateAdjacentTitles();
+      updateSeoMeta(project);
+
+      return buildSlides(project).then(function(slideshowState) {
+        slides = Array.from(document.querySelectorAll('.slide'));
+        hasIntroSlide = slideshowState.hasIntro;
+        totalImagesCount = slideshowState.validImagesCount;
+
+        if (slides.length === 0) {
+          index = 0;
+          updateCursorCounterText();
+          if (cursorCounterEl) cursorCounterEl.classList.remove('is-visible');
+          return;
+        }
+
+        slides.forEach(function(slideEl) { slideEl.classList.remove('active'); });
+        index = entryEdge === 'end' ? slides.length - 1 : 0;
+        slides[index].classList.add('active');
+        updateCursorCounterText();
+        attachNavZoneListeners();
+      });
+    }
+
+    loadProject(slug, 'start');
   </script>
 
 </body>

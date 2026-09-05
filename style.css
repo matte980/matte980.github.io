@@ -800,10 +800,39 @@ body.fade-out {
   }
 
   .project-header {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'left right'
+      'title title';
     align-items: center;
-    justify-content: space-between;
+    gap: 0.5rem 0.8rem;
     padding: 0.7rem 1rem;
+  }
+
+  .project-header > .gallery-nav-link--left {
+    grid-area: left;
+  }
+
+  .project-header > .gallery-nav-combo {
+    grid-area: right;
+    justify-self: end;
+  }
+
+  .project-title-group {
+    grid-area: title;
+  }
+
+  .project-title-adjacent {
+    font-size: 0.58rem;
+  }
+
+  .project-title-adjacent--prev {
+    margin-right: 1rem;
+  }
+
+  .project-title-adjacent--next {
+    margin-left: 1rem;
   }
 
   .project-header a {
@@ -959,8 +988,8 @@ body.fade-out {
 
 .project-header {
   padding: 0.9rem 2rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
 }
@@ -971,6 +1000,77 @@ body.fade-out {
 
 .project-header .gallery-nav-link--left {
   white-space: nowrap;
+}
+
+.project-title {
+  justify-self: center;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--text);
+  letter-spacing: 0.34em;
+  cursor: default;
+  transition: none;
+}
+
+.project-title:hover,
+.project-title:focus-visible {
+  color: var(--text);
+  letter-spacing: 0.34em;
+}
+
+.project-title-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+}
+
+.project-title-adjacent {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 200;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.55;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.project-title-adjacent--prev {
+  right: 100%;
+  margin-right: 1.9rem;
+}
+
+.project-title-adjacent--next {
+  left: 100%;
+  margin-left: 1.9rem;
+}
+
+.project-title-adjacent--prev::before {
+  content: '\2190';
+  display: inline-block;
+  margin-right: 0.4rem;
+}
+
+.project-title-adjacent--next::after {
+  content: '\2192';
+  display: inline-block;
+  margin-left: 0.4rem;
+}
+
+.project-title-adjacent:empty {
+  display: none;
+}
+
+.project-title-adjacent:hover {
+  color: var(--text);
+  opacity: 0.9;
 }
 
 .slideshow {
