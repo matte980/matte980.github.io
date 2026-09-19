@@ -27,8 +27,10 @@
 
   <div class="border-frame">
     <div class="hero-image">
-      <img src="images/Hero/Hero_5.jpg" alt="cover">
+      <img src="images/Hero/Hero_0.jpg" alt="cover">
     </div>
+
+    <div class="hero-click-zone" role="button" tabindex="0" aria-label="Change background image"></div>
 
     <div class="hero-content">
       <a class="site-name" href="bio/" data-site-label="brand"></a>
@@ -47,5 +49,28 @@
     </div>
   </div>
 
+  <script>
+    (function() {
+      var heroImg = document.querySelector('.hero-image img');
+      var clickZone = document.querySelector('.hero-click-zone');
+      if (!heroImg || !clickZone) return;
+
+      var totalHeroImages = 6;
+      var nextIndex = 1;
+
+      function swapHeroImage() {
+        heroImg.src = 'images/Hero/Hero_' + nextIndex + '.jpg';
+        nextIndex = (nextIndex + 1) % totalHeroImages;
+      }
+
+      clickZone.addEventListener('click', swapHeroImage);
+      clickZone.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          swapHeroImage();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
