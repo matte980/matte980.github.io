@@ -38,7 +38,7 @@
       </header>
 
       <figure class="bio-portrait" aria-label="Matteo Monzali portrait">
-        <img src="../images/Res/Matteo.jpeg" alt="Portrait of Matteo Monzali">
+        <img id="bioPortraitImage" src="../images/Res/Matteo.jpeg" alt="Portrait of Matteo Monzali" role="button" tabindex="0" aria-label="Change portrait">
       </figure>
 
       <main class="bio-content">
@@ -46,11 +46,11 @@
           <p class="bio-kicker">Matteo Monzali</p>
           <h1 class="bio-title">Bio</h1>
           <p class="bio-text">
-            Matteo Monzali is a documentary photographer with a scientific background in physics. After his academic path, he decided to devote himself to photography, training professionally at Studio Marangoni in Florence and working as a photographer's assistant. This dual perspective, combining scientific rigour with a photographic eye, runs through all his work.
+            Matteo is a documentary photographer with a scientific background in physics. After his academic path, he decided to work in photography, studying professionally at Studio Marangoni in Florence and working as a photographer's assistant. The double perspective, scientific and visual, runs through all his work.
 
-            He believes science communicates better through images than through data. A photograph, unlike a graph, raises questions before it gives answers, and reaches audiences in ways that numbers alone cannot.
+            He believes science should communicate also visually, other than just with data and plots. A photograph, unlike a graph, raises questions before it gives answers, and reaches audiences in ways that numbers alone cannot, so that the two methods can complement each other.
 
-            He specialises in environmental and scientific photography, depicting the relationship between humankind and nature with a direct approach. Alongside this, he undertakes experimental work with artificial intelligence applied to imagery, exploring new visual languages.
+            He specialises in environmental and scientific photography, showing the relationship between humankind and nature in different contexts, from laboratories to the natural world.
           </p>
 
           <div class="bio-divider"></div>
@@ -90,6 +90,29 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const bioShellEl = document.querySelector('.bio-shell');
+      const bioPortraitImage = document.getElementById('bioPortraitImage');
+
+      function switchPortrait() {
+        if (!bioPortraitImage) return;
+
+        const showingSecondPortrait = bioPortraitImage.dataset.portrait === 'second';
+        bioPortraitImage.src = showingSecondPortrait
+          ? '../images/Res/Matteo.jpeg'
+          : '../images/Res/Matteo2.jpg';
+        bioPortraitImage.alt = showingSecondPortrait
+          ? 'Portrait of Matteo Monzali'
+          : 'Portrait of Matteo Monzali, alternate image';
+        bioPortraitImage.dataset.portrait = showingSecondPortrait ? 'first' : 'second';
+      }
+
+      if (bioPortraitImage) {
+        bioPortraitImage.addEventListener('click', switchPortrait);
+        bioPortraitImage.addEventListener('keydown', function(event) {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          switchPortrait();
+        });
+      }
 
       function updateBioScrollState() {
         if (!bioShellEl) return;

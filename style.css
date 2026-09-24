@@ -37,11 +37,11 @@ body.fade-out {
 
 .border-frame {
   width: 100vw;
-  min-height: calc(100dvh - 2px);
-  height: calc(100dvh - 2px);
+  min-height: 100dvh;
+  height: 100dvh;
   margin: 0;
-  padding: 18px;
-  border: 1px solid var(--border);
+  padding: 0;
+  border: 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -51,7 +51,7 @@ body.fade-out {
 .hero-image {
   position: absolute;
   inset: 0;
-  padding: 20px;
+  padding: 0;
   background-color: var(--bg);
   display: flex;
   align-items: center;
@@ -208,24 +208,27 @@ body.fade-out {
 /* ─── GALLERY PAGES ─── */
 
 .gallery-frame {
-  min-height: 95dvh;
-  margin: 18px;
-  border: 1px solid var(--border);
+  min-height: 100dvh;
+  margin: 0;
+  border: 0;
   display: flex;
   flex-direction: column;
   background: var(--bg);
   justify-content: flex-start;
   align-items: center;
-  padding-top: 1rem;
+  padding-top: 0;
 }
 
 .gallery-header {
-  padding: 0 2.5rem 0.9rem;
+  padding: 0.65rem 2.5rem 0.9rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: baseline;
-  border-bottom: 1px solid var(--border);
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--bg);
 }
 
 .gallery-title {
@@ -1241,10 +1244,10 @@ body.fade-out {
 }
 
 .bio-frame {
-  min-height: calc(100dvh - 2px);
+  min-height: 100dvh;
   margin: 0;
-  padding: 18px;
-  border: 1px solid var(--border);
+  padding: 0;
+  border: 0;
   position: relative;
   overflow: hidden;
 }
@@ -1253,7 +1256,7 @@ body.fade-out {
 .bio-overlay,
 .bio-shell {
   position: absolute;
-  inset: 18px;
+  inset: 0;
 }
 
 .bio-background img {
@@ -1299,7 +1302,7 @@ body.fade-out {
   transform: translateY(-50%);
   width: clamp(255px, 33vw, 450px);
   z-index: 3;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .bio-portrait img {
@@ -1307,6 +1310,7 @@ body.fade-out {
   height: auto;
   object-fit: contain;
   display: block;
+  cursor: pointer;
 }
 
 .bio-content {
@@ -1458,13 +1462,13 @@ body.fade-out {
 
 @media (max-width: 700px) {
   .bio-frame {
-    padding: 14px;
+    padding: 0;
   }
 
   .bio-background,
   .bio-overlay,
   .bio-shell {
-    inset: 14px;
+    inset: 0;
   }
 
   .bio-header {
