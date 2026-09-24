@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-site-title="habitat" data-site-title-suffix=" | Matteo Monzali"></title>
+<meta name="description" content="Habitat photography and environmental storytelling by Matteo Monzali, with fieldwork and visual reporting from natural landscapes and scientific contexts.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://matteomonzali.com/habitat/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Matteo Monzali">
+<meta property="og:title" content="Habitat | Matteo Monzali">
+<meta property="og:description" content="Habitat photography and environmental storytelling by Matteo Monzali, with fieldwork and visual reporting from natural landscapes and scientific contexts.">
+<meta property="og:url" content="https://matteomonzali.com/habitat/">
+<meta property="og:image" content="https://matteomonzali.com/images/Res/DescriptionImage.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Habitat | Matteo Monzali">
+<meta name="twitter:description" content="Habitat photography and environmental storytelling by Matteo Monzali, with fieldwork and visual reporting from natural landscapes and scientific contexts.">
+<meta name="twitter:image" content="https://matteomonzali.com/images/Res/DescriptionImage.jpg">
+<link rel="icon" type="image/png" href="../images/Res/website-icon.png">
+<link rel="stylesheet" href="../style.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="../site-data.js"></script>
+<script src="../shared-ui.js"></script>
+</head>
+<body>
+
+  <div class="gallery-frame work-frame">
+    <div class="gallery-header">
+      <a class="gallery-nav-link gallery-nav-link--left" href="../">←&nbsp;Home</a>
+      <h1 class="gallery-title" data-site-label="habitat"></h1>
+      <div class="gallery-nav-combo gallery-nav-link--right">
+        <a class="gallery-nav-link" href="../science/">Science</a>
+        <span class="gallery-nav-separator" aria-hidden="true">&nbsp;&mdash;&nbsp;</span>
+        <a class="gallery-nav-link" href="../bio/">Bio</a>
+      </div>
+    </div>
+
+    <div class="gallery-grid gallery-grid--scattered gallery-grid--science">
+      <div class="gallery-item-wrapper">
+        <div class="gallery-item gallery-item--text" aria-label="Habitat intro">
+          <span class="science-text-card-copy"></span>
+        </div>
+      </div>
+      <div class="gallery-item-wrapper">
+        <a class="gallery-item" href="../gallery.html#habitat/uomo-selvatico">
+          <img src="../images/Habitat/UomoSelvatico/UomoSelvatico_01.jpg" alt="Uomo Selvatico">
+          <span class="item-title">Uomo Selvatico</span>
+        </a>
+      </div>
+      <div class="gallery-item-wrapper">
+        <a class="gallery-item" href="../gallery.html#habitat/between-the-water-and-us">
+          <img src="../images/Habitat/Between the Water and Us/Arno_01.jpg" alt="Between the Water and Us">
+          <span class="item-title">Between the Water and Us</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function renderStructuredTextCard(element, rawText) {
+      if (!element || typeof rawText !== 'string') return;
+
+      const normalized = rawText.replace(/\r\n/g, '\n').trim();
+      if (!normalized) return;
+
+      const paragraphs = normalized
+        .split(/\n\s*\n/)
+        .map(function(paragraph) {
+          return paragraph.replace(/\s+/g, ' ').trim();
+        })
+        .filter(function(paragraph) {
+          return paragraph.length > 0;
+        });
+
+      if (paragraphs.length === 0) return;
+
+      const subtitle = paragraphs.length > 1 ? '<span class="science-text-card-subtitle">' + paragraphs[0].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>' : '';
+      const body = '<span class="science-text-card-text">' + (paragraphs.length > 1 ? paragraphs.slice(1).join('\n\n') : paragraphs[0]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n\n/g, '<br><br>') + '</span>';
+      element.innerHTML = subtitle + body;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const workNoteEl = document.querySelector('.science-text-card-copy');
+      if (workNoteEl) {
+        fetch('../images/Intro/IntroHabitat.txt', { cache: 'no-store' })
+          .then(function(response) {
+            if (!response.ok) return null;
+            return response.text();
+          })
+          .then(function(content) {
+            renderStructuredTextCard(workNoteEl, content || '');
+          })
+          .catch(function() {
+            // Keep fallback text already present in the markup.
+          });
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        e.preventDefault();
+        window.navigateWithFade('../');
+      });
+    });
+  </script>
+
+</body>
+</html>
