@@ -80,15 +80,6 @@ body.fade-out {
   outline: none;
 }
 
-.placeholder-text {
-  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-}
-
 
 .hero-content {
   position: relative;
@@ -279,6 +270,15 @@ body.fade-out {
   white-space: nowrap;
 }
 
+.gallery-header > .gallery-nav-link--left,
+.gallery-nav-combo .gallery-nav-link {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1;
+  display: inline-flex;
+  align-items: flex-start;
+}
+
 .gallery-nav-separator {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
@@ -287,8 +287,6 @@ body.fade-out {
   color: var(--text-muted);
   text-transform: uppercase;
 }
-
-.back-link:hover { color: var(--text); }
 
 .gallery-grid {
   display: grid;
@@ -449,9 +447,6 @@ body.fade-out {
 .gallery-grid--research .gallery-item {
   align-items: stretch;
   justify-content: center;
-}
-
-.gallery-grid--research .gallery-item {
   height: auto;
   min-height: 100%;
   background: transparent;
@@ -772,6 +767,11 @@ body.fade-out {
     font-size: 0.7rem;
   }
 
+  .gallery-header > .gallery-nav-link--left,
+  .gallery-nav-combo .gallery-nav-link {
+    font-size: 0.75rem;
+  }
+
   .gallery-nav-combo {
     justify-content: flex-end;
     flex-wrap: wrap;
@@ -826,10 +826,6 @@ body.fade-out {
     object-fit: contain;
     width: 100%;
     height: 100%;
-  }
-
-  .back-link {
-    font-size: 12px;
   }
 
   .slide {
@@ -947,15 +943,6 @@ body.fade-out {
   background: rgba(0, 0, 0, 0.3);
 }
 
-.ph {
-  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  color: rgba(80, 78, 74, 0.4);
-  text-transform: uppercase;
-}
-
 .project-frame {
   min-height: 100dvh;
   display: flex;
@@ -978,6 +965,11 @@ body.fade-out {
 
 .project-header .gallery-nav-link--left {
   white-space: nowrap;
+}
+
+.project-header .gallery-nav-link--left,
+.project-title {
+  font-size: 0.9rem;
 }
 
 .project-title {
@@ -1010,11 +1002,11 @@ body.fade-out {
   transform: translateY(-50%);
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 200;
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-muted);
-  opacity: 0.55;
+  opacity: 0.7;
   white-space: nowrap;
   cursor: pointer;
   transition: color 0.3s ease, opacity 0.3s ease;
@@ -1048,7 +1040,7 @@ body.fade-out {
 
 .project-title-adjacent:hover {
   color: var(--text);
-  opacity: 0.9;
+  opacity: 95;
 }
 
 @media (max-width: 700px) {
@@ -1085,6 +1077,11 @@ body.fade-out {
 
   .project-header a {
     text-align: left;
+  }
+
+  .project-header .gallery-nav-link--left,
+  .project-title {
+    font-size: 0.8rem;
   }
 }
 
@@ -1186,7 +1183,6 @@ body.fade-out {
   letter-spacing: 0.02em;
   color: var(--text);
   white-space: pre-line;
-  margin: 2 0 0 0;
 }
 
 .cursor-counter {

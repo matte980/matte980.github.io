@@ -673,20 +673,20 @@
     }
 
     if (projectTitlePrevEl) {
-      projectTitlePrevEl.addEventListener('click', function() { switchProject(-1); });
+      projectTitlePrevEl.addEventListener('click', function() { switchProject(-1, 'start'); });
     }
     if (projectTitleNextEl) {
       projectTitleNextEl.addEventListener('click', function() { switchProject(1); });
     }
 
-    function switchProject(direction) {
+    function switchProject(direction, entryEdge) {
       if (projectOrder.length < 2) return false;
       const currentOrderIndex = projectOrder.indexOf(slug);
       const baseIndex = currentOrderIndex === -1 ? 0 : currentOrderIndex;
       const nextOrderIndex = (baseIndex + direction + projectOrder.length) % projectOrder.length;
       const nextSlug = projectOrder[nextOrderIndex];
       if (!nextSlug || nextSlug === slug) return false;
-      loadProject(nextSlug, direction > 0 ? 'start' : 'end');
+      loadProject(nextSlug, entryEdge || (direction > 0 ? 'start' : 'end'));
       return true;
     }
 
