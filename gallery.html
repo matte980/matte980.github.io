@@ -20,7 +20,6 @@
 <meta id="meta-twitter-image" name="twitter:image" content="https://matteomonzali.com/images/Res/DescriptionImage.jpg">
 <link rel="icon" type="image/png" href="images/Res/website-icon.png">
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="site-data.js"></script>
 <script src="shared-ui.js"></script>
 </head>
@@ -447,7 +446,14 @@
     }
 
     function parseIntroTextContent(rawText) {
-      const normalized = typeof rawText === 'string' ? rawText.replace(/\r\n/g, '\n').trim() : '';
+      const normalized = typeof rawText === 'string'
+        ? rawText.replace(/\r\n/g, '\n').split('\n')
+            .filter(function(line) {
+              return !line.trimStart().startsWith('###');
+            })
+            .join('\n')
+            .trim()
+        : '';
       if (!normalized) {
         return { subtitle: '', text: '' };
       }
