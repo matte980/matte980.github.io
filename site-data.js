@@ -2,7 +2,7 @@ window.SITE_NAV = {
   brand: 'Matteo Monzali',
   personal: 'Human nature',
   work: 'Science',
-  habitat: '(H)abitare',
+  habitat: 'Habitāre',
   research: 'Found Archives'
 };
 
