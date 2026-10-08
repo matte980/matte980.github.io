@@ -183,11 +183,39 @@ body.fade-out {
   position: relative;
   z-index: 2;
   padding: 0 2rem 1.2rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: flex-end;
   opacity: 0;
   animation: fadeUp 1s ease 1.3s forwards;
+}
+
+.hero-contacts {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.hero-contacts a {
+  font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 200;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  text-align: center;
+}
+
+.hero-contacts a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.hero-contacts a:hover {
+  color: #fff;
 }
 
 .hero-footer .tagline {
@@ -197,6 +225,34 @@ body.fade-out {
   letter-spacing: 0.28em;
   color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
+}
+
+.hero-footer .tagline:last-child {
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .hero-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'contacts contacts'
+      'signature year';
+    row-gap: 0.8rem;
+    padding-right: 1.2rem;
+    padding-left: 1.2rem;
+  }
+
+  .hero-footer .tagline:first-child {
+    grid-area: signature;
+  }
+
+  .hero-footer .tagline:last-child {
+    grid-area: year;
+  }
+
+  .hero-contacts {
+    grid-area: contacts;
+  }
 }
 
 @keyframes fadeUp {
@@ -1320,7 +1376,7 @@ body.fade-out {
 .bio-content {
   flex: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   padding: 2rem 2.2rem 3rem;
 }
 
@@ -1456,6 +1512,10 @@ body.fade-out {
 }
 
 @media (max-width: 1100px) {
+  .bio-content {
+    align-items: flex-start;
+  }
+
   .bio-portrait {
     top: 1.9rem;
     right: 2rem;

@@ -84,7 +84,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const foundArchivesNoteEl = document.querySelector('.gallery-item--text .science-text-card-copy');
       if (foundArchivesNoteEl) {
-        fetch('../images/Intro/IntroFoundArchives.txt', { cache: 'no-store' })
+        fetch('../Intro/IntroFoundArchives.txt', { cache: 'no-store' })
           .then(function(response) {
             if (!response.ok) return null;
             return response.text();

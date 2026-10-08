@@ -141,7 +141,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const workNoteEl = document.querySelector('.science-text-card-copy');
       if (workNoteEl) {
-        fetch('../images/Intro/IntroWorkNote.txt', { cache: 'no-store' })
+        fetch('../Intro/IntroWorkNote.txt', { cache: 'no-store' })
           .then(function(response) {
             if (!response.ok) return null;
             return response.text();
