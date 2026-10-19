@@ -44,6 +44,7 @@ body.fade-out {
 /* ─── LANDING ─── */
 
 .border-frame {
+  --home-font-weight: 350;
   width: 100vw;
   min-height: 100dvh;
   height: 100dvh;
@@ -104,7 +105,7 @@ body.fade-out {
 
 .site-name {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
+  font-weight: var(--home-font-weight);
   font-size: 1rem;
   letter-spacing: 0.28em;
   color: rgba(255, 255, 255, 0.92);
@@ -160,7 +161,7 @@ body.fade-out {
 
 .nav-links .nav-separator {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
+  font-weight: var(--home-font-weight);
   font-size: 1rem;
   color: rgba(255, 255, 255, 1);
   letter-spacing: 0.28em;
@@ -169,7 +170,7 @@ body.fade-out {
 
 .nav-links a {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
+  font-weight: var(--home-font-weight);
   font-size: 1rem;
   color: rgba(255, 255, 255, 1);
   text-decoration: none;
@@ -210,7 +211,7 @@ body.fade-out {
 
 .hero-contacts a {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
+  font-weight: var(--home-font-weight);
   font-size: 10px;
   letter-spacing: 0.28em;
   line-height: 1.4;
@@ -230,7 +231,7 @@ body.fade-out {
 
 .hero-footer .tagline {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 200;
+  font-weight: var(--home-font-weight);
   font-size: 10px;
   letter-spacing: 0.28em;
   color: rgba(255, 255, 255, 0.9);
