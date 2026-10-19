@@ -103,6 +103,15 @@ body.fade-out {
   padding: 1.2rem 2rem 0;
 }
 
+.hero-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 55% 38% at 100% 0%, rgba(0, 0, 0, 0.42) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
 .site-name {
   font-family: 'Avenir Next', 'Avenir', 'Helvetica Neue', Arial, sans-serif;
   font-weight: var(--home-font-weight);
