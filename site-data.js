@@ -3,6 +3,7 @@ window.SITE_NAV = {
   personal: 'Human nature',
   work: 'Science',
   habitat: 'Habitāre',
+  habitare: 'Habitāre',
   commercial: 'Commercial',
   research: 'Found Archives'
 };

@@ -121,8 +121,8 @@ body.fade-out {
   text-decoration: none;
   display: inline-block;
   position: relative;
-  transform-origin: center;
-  transition: color 0.3s ease, letter-spacing 0.4s ease;
+  transform-origin: left center;
+  transition: color 0.3s ease, transform 0.3s ease;
   text-transform: none;
   line-height: 1;
   opacity: 0;
@@ -143,7 +143,7 @@ body.fade-out {
 
 .site-name:hover {
   color: #fff;
-  letter-spacing: 0.34em;
+  transform: scale(1.03);
 }
 
 .nav-links {
@@ -167,6 +167,7 @@ body.fade-out {
 .nav-links li:nth-child(2) { animation-delay: 0.8s; }
 .nav-links li:nth-child(3) { animation-delay: 1.0s; }
 .nav-links li:nth-child(4) { animation-delay: 1.2s; }
+.nav-links li:nth-child(5) { animation-delay: 1.4s; }
 
 .nav-links .nav-events {
   align-self: stretch;
@@ -205,13 +206,13 @@ body.fade-out {
   align-items: flex-start;
   min-width: max-content;
   transform-origin: center;
-  transition: color 0.3s ease, letter-spacing 0.4s ease;
+  transition: color 0.3s ease, transform 0.3s ease;
   text-transform: uppercase;
 }
 
 .nav-links a:hover {
   color: #fff;
-  letter-spacing: 0.34em;
+  transform: scale(1.06);
 }
 
 .hero-footer {
@@ -1659,4 +1660,3 @@ body.fade-out {
 .nav-right {
   right: 0;
 }
-

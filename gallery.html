@@ -210,8 +210,27 @@
       habitat: {
         indexPage: 'habitat/',
         indexLabel: SITE_LABELS.habitat,
-        order: ['uomo-selvatico', 'between-the-water-and-us'],
+        order: ['take-me-out', 'uomo-selvatico', 'between-the-water-and-us'],
         projects: {
+          'take-me-out': {
+            pageTitle: 'Take me out',
+            altLabel: 'Take me out',
+            basePath: 'images/Habitat/TakeMeOut',
+            introTextPath: 'Intro/IntroTakeMeOut.txt',
+            introLabel: 'Take me out',
+            files: [
+              'N1_Laghetto2.png',
+              'N1_RetroArca.png',
+              'N2_Boschetto.png',
+              'N2_SentieroBiforco.png',
+              'N2_SentieroBiforco_.png',
+              'N3_BoschettoAlbero.png',
+              'N3_SentieroBiforco.png',
+              'N4_BoschettoCancello.png',
+              'N4_BoschettoSasso.png',
+              'N4_SentieroBiforco.png'
+            ]
+          },
           'uomo-selvatico': {
             pageTitle: 'L\'è un òmen saivâdegh',
             altLabel: 'L\'è un òmen saivâdegh',
@@ -287,6 +306,8 @@
         }
       }
     };
+
+    CATALOG.habitare = CATALOG.habitat;
 
     const params = new URLSearchParams(window.location.search);
     const hashRoute = window.location.hash.replace(/^#\/?/, '');
